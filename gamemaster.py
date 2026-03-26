@@ -8,7 +8,7 @@ class Player:
 
     def take_damage(self, amount):
         self.hp -= amount
-        print(f"{self.name} tar{amount} skada. HP kvar: {self.hp}")
+        print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
     
     def is_alive(self):
         return self.hp > 0
@@ -47,7 +47,7 @@ class enemy:
 
     def take_damage(self, amount):
         self.hp -= amount
-        print(f"{self.name} tar{amount} skada. HP kvar: {self.hp}")
+        print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
     
     def is_alive(self):
         return self.hp > 0
@@ -58,7 +58,7 @@ class enemy:
 room_types = {
     "Fängelsecell": {
         "description": "En kall och fuktig cell med en låst dörr",
-        "items": ["rostig nyckel"],
+        "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.")],
         "enemy" : None
     },
     "Korridor":{
@@ -68,7 +68,7 @@ room_types = {
     },
     "Bibliotek": {
         "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
-        "items": ["karta", "gammal bok"],
+        "items": [Potion("healing potion", 5, "En liten flaska med röd vätska.")], # lägg till karta och bok
         "enemy": "Hobgoblin"
     }
 }
@@ -91,6 +91,35 @@ class Room:
             "key": key
         }    
 
+class Item:
+    def __init__(self, name, description=""):
+        self.name = name
+        self.description = description
+    
+    def use(self, player):
+        print(f"Du kan itne använda{self.name} här.")
+
+class Key(Item):
+    def use(self, player):
+        room = player.current_room
+
+        for direction, exit_data in room.exits.items():
+            if exit_data["locked"] and exit_data["key"] == self.name:
+                exit_data["locked"] = False
+                print(f"Du låser upp dörren mot {direction} med {self.name}.")
+                return
+        print(f"{self.name} passar inte här.")
+
+class Potion(Item):
+    def __init__(self, name, heal_amount, description=""):
+        super().__init__(name, description)
+        self.heal_amount = heal_amount
+
+    def use(self, player):
+        player.hp += self.heal_amount
+        print(f"Du använder {self.name} och återfår {self.heal_amount} HP.")
+        print(f"HP: {player.hp}")
+        player.inventory.remove(self)
 
 #===================== Help functions ===================
 def show_room(player):
@@ -103,13 +132,18 @@ def show_room(player):
     print(room.description)
 
     if room.searched and room.items:
-        print("Du ser följande föremål:", ", ".join(room.items))
+        print("Du ser:", ", ".join(item.name for item in room.items))
 
     if room.enemy and room.enemy.is_alive():
         print(f"En fiende finns här: {room.enemy.name} (HP: {room.enemy.hp})")
 
     if room.exits:
-        print("Utgångar:", ", ".join(room.exits.keys()))
+        print("Utgångar:")
+        for direction, exit_data in room.exits.items():
+            if exit_data["locked"]:
+                print(f"{direction} (låst)")
+            else:
+                print(f"{direction}")
 
 def player_command(player, command):
     room = player.current_room
@@ -128,9 +162,9 @@ def player_command(player, command):
         show_room(player)
 
     # visa inventarie
-    elif command == "inmventarie":
+    elif command == "inventarie":
         if player.inventory:
-            print("Du gar:", ",".join(player.inventory))
+            print("Du gar:", ",".join(item.name for item in player.inventory))
         else:
             print("Din inventarie är tomt.")
     
@@ -140,16 +174,29 @@ def player_command(player, command):
         found_item = None
     
         for item in room.items:
-            if item.lower() == item_name:
+            if item.name.lower() == item_name:
                 found_item = item
                 break
         
         if found_item:
             player.inventory.append(found_item)
             room.items.remove(found_item)
-            print(f"Du tog {found_item}")
+            print(f"Du tog {found_item.name}")
         else:
             print("Det itemet finns inte här")
+    # använda item    
+    elif command.startswith("använd"):
+        item_name = command[7:]
+        found_item = None
+
+        for item in player.inventory:
+            if item.name.lower() == item_name:
+                found_item = item
+                break
+        if found_item:
+            found_item.use(player)
+        else:
+            print("Du har itne det föremålet")
 
     # Attackera fiende
     elif command == "attackera":
@@ -168,8 +215,20 @@ def player_command(player, command):
 
     #rörelse
     elif command in room.exits:
-        player.current_room = room.exits[command]
-        show_room(player)
+        exit_data = room.exits[command]
+
+        if exit_data["locked"]:
+            needed_key = exit_data["key"]
+            if needed_key in player.inventory:
+                print(f"Du låser upp dörren med {needed_key}.")
+                exit_data["locked"] = False
+                player.current_room = exit_data["room"]
+                show_room(player)
+            else:
+                print("Dörren är låst")
+        else:
+            player.current_room = exit_data["room"]
+            show_room(player)
 
     # undersök
     elif command == "sök":
