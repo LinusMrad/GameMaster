@@ -1,4 +1,17 @@
-# ================= Spelarklasser ================
+# =========================================
+# 1. Spelardata / fiendedata
+# =========================================
+
+enemy_types = {
+    "Goblin": {"hp": 7, "attack":3},
+    "Hobgoblin": {"hp": 11, "attack":5},
+    "Bugbear": {"hp": 27, "attack": 15}
+}
+
+# =========================================
+# 2. Klasser för spelare och fiender
+# =========================================
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -25,20 +38,24 @@ class Halvling(Player):
         self.hp = 9
         self.attack = 8
 
-# ================= Fiender ================
-# Jag valde att separera speldata (t.ex. fiendetyper och rumstyper)
-# från själva klasserna genom att använda dictionaries.
-# Detta gör systemet mer flexibelt och lättare att utöka utan att
-# ändra den underliggande logiken
+# Fiende
+"""
+class Player:
+    def __init__(self, name):
+        self.name = name
+        stats = enemy_types[name]
+        self.hp = stats["hp"]
+        self.attack = stats["attack"]
 
-
-enemy_types = {
-    "Goblin": {"hp": 7, "attack":3},
-    "Hobgoblin": {"hp": 11, "attack":5},
-    "Bugbear": {"hp": 27, "attack": 15}
-}
-
-class enemy:
+    def take_damage(self, amount):
+        self.hp -= amount
+        print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
+    
+    def is_alive(self):
+        return self.hp > 0
+"""
+# Fiende
+class Enemy:
     def __init__(self, name):
         self.name = name
         stats = enemy_types[name]
@@ -52,45 +69,19 @@ class enemy:
     def is_alive(self):
         return self.hp > 0
 
+# ================= Fiender ================
+# Jag valde att separera speldata (t.ex. fiendetyper och rumstyper)
+# från själva klasserna genom att använda dictionaries.
+# Detta gör systemet mer flexibelt och lättare att utöka utan att
+# ändra den underliggande logiken
 
 
-#================= Spelvärld ========================
-room_types = {
-    "Fängelsecell": {
-        "description": "En kall och fuktig cell med en låst dörr",
-        "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.")],
-        "enemy" : None
-    },
-    "Korridor":{
-        "description": "En märk korridor med fladdrande facklor",
-        "items": [],
-        "enemy": "Goblin"
-    },
-    "Bibliotek": {
-        "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
-        "items": [Potion("healing potion", 5, "En liten flaska med röd vätska.")], # lägg till karta och bok
-        "enemy": "Hobgoblin"
-    }
-}
 
-class Room:
-    def __init__(self, room_type):
-        self.room_type = room_type
-        data = room_types[room_type]
-        
-        self.description = data["description"]
-        self.items = data["items"].copy()
-        self.enemy = enemy(data["enemy"]) if data["enemy"] else None
-        self.exits = {}
-        self.searched = False
 
-    def connect(self, direction, room, locked=False, key=None):
-        self.exits[direction] = {
-            "room": room,
-            "locked": locked,
-            "key": key
-        }    
 
+# =========================================
+# 3. Item-klasser
+# =========================================
 class Item:
     def __init__(self, name, description=""):
         self.name = name
@@ -121,10 +112,66 @@ class Potion(Item):
         print(f"HP: {player.hp}")
         player.inventory.remove(self)
 
-#===================== Help functions ===================
+class Book(Item):
+    def __init__(self, name, text):
+        super().__init__(name)
+        self.text = text
+
+    def use(self, player):
+        print(f"Du läser {self.name}")
+        print(self.text)
+
+# =========================================
+# 4. Spelvärldsdata
+# =========================================
+room_types = {
+    "Fängelsecell": {
+        "description": "En kall och fuktig cell med en dörr",
+        "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.")],
+        "enemy" : None
+    },
+    "Korridor":{
+        "description": "En mörk korridor med fladdrande facklor",
+        "items": [],
+        "enemy": "Goblin"
+    },
+    "Bibliotek": {
+        "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
+        "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."), 
+                  Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # lägg till karta och bok
+        "enemy": "Hobgoblin"
+    }
+}
+
+# =========================================
+# 5. Rumsklass
+# =========================================
+
+class Room:
+    def __init__(self, room_type):
+        self.room_type = room_type
+        data = room_types[room_type]
+        
+        self.description = data["description"]
+        self.items = data["items"].copy()
+        self.enemy = Enemy(data["enemy"]) if data["enemy"] else None
+        self.exits = {}
+        self.searched = False
+
+    def connect(self, direction, room, locked=False, key=None):
+        self.exits[direction] = {
+            "room": room,
+            "locked": locked,
+            "key": key
+        }    
+
+# =========================================
+# 6. Hjälpfunktioner / spellogik
+# =========================================
+
 def show_room(player):
     """
-    Ger en beskrivning av rummet spelaren befinner sig i
+    Visar information om rummet spelaren befinner sig i.
     """
     room = player.current_room
     print("\n------------------------")
@@ -185,7 +232,7 @@ def player_command(player, command):
         else:
             print("Det itemet finns inte här")
     # använda item    
-    elif command.startswith("använd"):
+    elif command.startswith("använd "):
         item_name = command[7:]
         found_item = None
 
@@ -219,7 +266,9 @@ def player_command(player, command):
 
         if exit_data["locked"]:
             needed_key = exit_data["key"]
-            if needed_key in player.inventory:
+            has_key = any(item.name == needed_key for item in player.inventory)
+
+            if has_key:
                 print(f"Du låser upp dörren med {needed_key}.")
                 exit_data["locked"] = False
                 player.current_room = exit_data["room"]
@@ -234,14 +283,14 @@ def player_command(player, command):
     elif command == "sök":
         if room.searched:
             if room.items:
-                print("Du har redan letat här. Du ser:".join(room.items))
+                print("Du har redan letat här. Du ser:".join(item.name for item in room.items))
             else:
                 print("Du har redan letat här, det finns inget kvar")
         
         else:
             room.searched = True
             if room.items:
-                print("Du letar genom rummet och hittar:", ",".join(room.items))
+                print("Du letar genom rummet och hittar:", ",".join(item.name for item in room.items))
             else:
                 print("Du letar igenom rummet men hittar inget")
     
@@ -250,6 +299,7 @@ def player_command(player, command):
     return True
 
 def player_loop(player):
+    """Spelets huvudloop"""
     print(f"Välkommen {player.name}!")
     print("Skriv 'hjälp' för att se kommandon")
     show_room(player)
@@ -260,20 +310,26 @@ def player_loop(player):
         running = player_command(player, command)
     
             
-#===================== Rumskopplingar ===================
+# =========================================
+# 7. Bygg spelvärlden
+# =========================================
  
 cell = Room("Fängelsecell")
 korridor = Room("Korridor")
 bibliotek = Room("Bibliotek")
 
-cell.connect("norr", korridor, locked=True, key="rostig nyckel")
+cell.connect("norr", korridor, locked=True, key=("rostig nyckel"))
 korridor.connect("söder", cell)
 korridor.connect("öster", bibliotek)
 bibliotek.connect("väster", korridor)
 
-#============ Spelare =======================
+# =========================================
+# 8. Skapa spelaren
+# =========================================
 player = Krigare("Bree")
 player.current_room = cell
 
-#============ starta spel =======================
+# =========================================
+# 9. Starta spelet
+# =========================================
 player_loop(player)
