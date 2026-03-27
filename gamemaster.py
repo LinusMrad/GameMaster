@@ -1,11 +1,16 @@
 # =========================================
+# Importer
+# =========================================
+import random
+
+# =========================================
 # 1. Spelardata / fiendedata
 # =========================================
 
 enemy_types = {
-    "Goblin": {"hp": 7, "attack":3},
-    "Hobgoblin": {"hp": 11, "attack":5},
-    "Bugbear": {"hp": 27, "attack": 15}
+    "Goblin": {"hp": 7, "attack":3, "armor": 8},
+    "Hobgoblin": {"hp": 11, "attack":5, "armor": 12},
+    "Bugbear": {"hp": 27, "attack": 7, "armor": 16}
 }
 
 # =========================================
@@ -17,7 +22,12 @@ class Player:
         self.name = name
         self.inventory = []
         self.hp = 0
-        self.attack = 0
+        self.armor = 0
+
+        self.strength = 10 # påverkar attacker
+        self.agility = 10 # påverkar förmåga att smyga eller fly
+        self.intelligence = 10 # påverkar förmågan att upptäcka föremål och ledtrådar
+        self.charisma = 10 # påverkar förmågan att övertala eller få ut infroamtion i konversationer
 
     def take_damage(self, amount):
         self.hp -= amount
@@ -25,35 +35,52 @@ class Player:
     
     def is_alive(self):
         return self.hp > 0
+    
+    def get_modifier(self, stat):
+        return(stat - 10) // 2
 
 class Krigare(Player):
     def __init__(self, name):
         super().__init__(name)
         self.hp = 12
-        self.attack = 16
+        self.armor = 15
+        self.strength = 16
+        self.agility = 9
+        self.intelligence = 11
+        self.charisma = 14
 
 class Halvling(Player):
     def __init__(self, name):
         super().__init__(name)
-        self.hp = 9
-        self.attack = 8
+        self.hp = 10
+        self.armor = 14
+        self.strength = 8
+        self.agility = 16
+        self.intelligence = 13
+        self.charisma = 16
 
-# Fiende
-"""
-class Player:
+class Dvärg(Player):
     def __init__(self, name):
-        self.name = name
-        stats = enemy_types[name]
-        self.hp = stats["hp"]
-        self.attack = stats["attack"]
+        super().__init__(name)
+        self.hp = 11
+        self.armor = 18
+        self.strength = 14
+        self.agility = 8
+        self.intelligence = 10
+        self.charisma = 12
 
-    def take_damage(self, amount):
-        self.hp -= amount
-        print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
-    
-    def is_alive(self):
-        return self.hp > 0
-"""
+class Alv(Player):
+    def __init__(self, name):
+        super().__init__(name)
+        self.hp = 8
+        self.armor = 12
+        self.strength = 10
+        self.agility = 15
+        self.intelligence = 16
+        self.charisma = 8
+
+
+
 # Fiende
 class Enemy:
     def __init__(self, name):
@@ -61,6 +88,7 @@ class Enemy:
         stats = enemy_types[name]
         self.hp = stats["hp"]
         self.attack = stats["attack"]
+        self.armor = stats["armor"]
 
     def take_damage(self, amount):
         self.hp -= amount
@@ -169,6 +197,20 @@ class Room:
 # 6. Hjälpfunktioner / spellogik
 # =========================================
 
+def roll_d20():
+    return random.randint(1, 20)
+
+
+def attack(attacker, defender):
+    roll = roll_d20()
+    print(f"{attacker.name} slår en d20: {roll}")
+
+    if roll >= defender.armor:
+        print(f"Träff! {roll} >= {defender.armor}")
+        defender.take_damage(attacker.attack)
+    else:
+        print(f"Miss! {roll} < {defender.armor}")
+
 def show_room(player):
     """
     Visar information om rummet spelaren befinner sig i.
@@ -248,15 +290,15 @@ def player_command(player, command):
     # Attackera fiende
     elif command == "attackera":
         if room.enemy and room.enemy.is_alive():
-            room.enemy.take_damage(player.attack)
+            attack(player, room.enemy)
 
             if not room.enemy.is_alive():
                 print(f"Du besegrade {room.enemy.name}!")
             else:
-                player.take_damage(room.enemy.attack)
-                if not player.is_alive():
-                    print("Du har dött...")
-                    return False
+                attack(room.enemy, player)
+            if not player.is_alive():
+                print("Du har dött...")
+                return False
         else:
             print("Det finns inga levande fiender här.")
 
