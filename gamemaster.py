@@ -17,27 +17,36 @@ enemy_types = {
 # 2. Klasser för spelare och fiender
 # =========================================
 
-class Player:
-    def __init__(self, name):
+class Character:
+    def __init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage):
         self.name = name
-        self.inventory = []
-        self.hp = 0
-        self.armor = 0
-
-        self.strength = 10 # påverkar attacker
-        self.agility = 10 # påverkar förmåga att smyga eller fly
-        self.intelligence = 10 # påverkar förmågan att upptäcka föremål och ledtrådar
-        self.charisma = 10 # påverkar förmågan att övertala eller få ut infroamtion i konversationer
+        self.hp = hp
+        self.armor = armor
+        self.strength = strength
+        self.agility = agility
+        self.intelligence = intelligence
+        self.charisma = charisma
+        self.weapon_damage = weapon_damage
 
     def take_damage(self, amount):
         self.hp -= amount
         print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
-    
+        
     def is_alive(self):
         return self.hp > 0
     
     def get_modifier(self, stat):
         return(stat - 10) // 2
+
+
+
+class Player:
+    def __init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage):
+        super().__init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage)
+        self.inventory = []
+        self.hp = 0
+        self.armor = 0
+
 
 class Krigare(Player):
     def __init__(self, name):
