@@ -8,10 +8,35 @@ import random
 # =========================================
 
 enemy_types = {
-    "Goblin": {"hp": 7, "attack":3, "armor": 8},
-    "Hobgoblin": {"hp": 11, "attack":5, "armor": 12},
-    "Bugbear": {"hp": 27, "attack": 7, "armor": 16}
+    "Goblin": {
+        "hp": 7,
+        "armor": 12,
+        "strength": 8,
+        "agility": 14,
+        "intelligence": 8,
+        "charisma": 6,
+        "weapon_damage": (1, 4)
+    },
+    "Hobgoblin": {
+        "hp": 11,
+        "armor": 14,
+        "strength": 12,
+        "agility": 12,
+        "intelligence": 10,
+        "charisma": 8,
+        "weapon_damage": (1, 6)
+    },
+    "Bugbear": {
+        "hp": 27,
+        "armor": 16,
+        "strength": 16,
+        "agility": 10,
+        "intelligence": 8,
+        "charisma": 7,
+        "weapon_damage": (2, 6)
+    }
 }
+
 
 # =========================================
 # 2. Klasser för spelare och fiender
@@ -40,71 +65,84 @@ class Character:
 
 
 
-class Player:
+class Player(Character):
     def __init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage):
-        super().__init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage)
+        super().__init__(name, hp, armor, strength, agility, intelligence, charisma, weapon_damage)
         self.inventory = []
-        self.hp = 0
-        self.armor = 0
+        self.current_room = None
 
 
 class Krigare(Player):
     def __init__(self, name):
-        super().__init__(name)
-        self.hp = 12
-        self.armor = 15
-        self.strength = 16
-        self.agility = 9
-        self.intelligence = 11
-        self.charisma = 14
+        super().__init__(
+            name=name,
+            hp=14,
+            armor=15,
+            strength=16,
+            agility=10,
+            intelligence=8,
+            charisma=10,
+            weapon_damage=(1, 8)
+        )
+
 
 class Halvling(Player):
     def __init__(self, name):
-        super().__init__(name)
-        self.hp = 10
-        self.armor = 14
-        self.strength = 8
-        self.agility = 16
-        self.intelligence = 13
-        self.charisma = 16
+        super().__init__(
+            name=name,
+            hp=10,
+            armor=14,
+            strength=8,
+            agility=16,
+            intelligence=13,
+            charisma=16,
+            weapon_damage=(1, 6)
+        )
 
 class Dvärg(Player):
     def __init__(self, name):
-        super().__init__(name)
-        self.hp = 11
-        self.armor = 18
-        self.strength = 14
-        self.agility = 8
-        self.intelligence = 10
-        self.charisma = 12
+        super().__init__(
+            name=name,
+            hp=11,
+            armor=18,
+            strength=14,
+            agility=8,
+            intelligence=10,
+            charisma=12,
+            weapon_damage=(1, 8)
+        )
 
 class Alv(Player):
     def __init__(self, name):
-        super().__init__(name)
-        self.hp = 8
-        self.armor = 12
-        self.strength = 10
-        self.agility = 15
-        self.intelligence = 16
-        self.charisma = 8
+        super().__init__(
+            name=name,
+            hp=8,
+            armor=12,
+            strength=10,
+            agility=15,
+            intelligence=16,
+            charisma=8,
+            weapon_damage=(1, 8)
+        )
+
+
 
 
 
 # Fiende
-class Enemy:
+class Enemy(Character):
     def __init__(self, name):
-        self.name = name
         stats = enemy_types[name]
-        self.hp = stats["hp"]
-        self.attack = stats["attack"]
-        self.armor = stats["armor"]
-
-    def take_damage(self, amount):
-        self.hp -= amount
-        print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
-    
-    def is_alive(self):
-        return self.hp > 0
+        super().__init__(
+            name=name,
+            hp=stats["hp"],
+            armor=stats["armor"],
+            strength=stats["strength"],
+            agility=stats["agility"],
+            intelligence=stats["intelligence"],
+            charisma=stats["charisma"],
+            weapon_damage=stats["weapon_damage"]
+        )
 
 # ================= Fiender ================
 # Jag valde att separera speldata (t.ex. fiendetyper och rumstyper)
@@ -209,16 +247,22 @@ class Room:
 def roll_d20():
     return random.randint(1, 20)
 
+def roll_damage(attacker):
+    low, high = attacker.weapon_damage
+    damage = random.randint(low, high) + attacker.get_modifier(attacker.strength)
+    return max(1, damage)
+
 
 def attack(attacker, defender):
-    roll = roll_d20()
-    print(f"{attacker.name} slår en d20: {roll}")
+    roll = roll_d20() + attacker.get_modifier(attacker.strength)
+    print(f"{attacker.name} slår: {roll}")
 
     if roll >= defender.armor:
-        print(f"Träff! {roll} >= {defender.armor}")
-        defender.take_damage(attacker.attack)
+        damage = roll_damage(attacker)
+        print(f"Träff! {attacker.name} gör {damage} skada.")
+        defender.take_damage(damage)
     else:
-        print(f"Miss! {roll} < {defender.armor}")
+        print(f"{attacker.name} missar.")
 
 def show_room(player):
     """
@@ -262,7 +306,7 @@ def player_command(player, command):
     # visa inventarie
     elif command == "inventarie":
         if player.inventory:
-            print("Du gar:", ",".join(item.name for item in player.inventory))
+            print("Du gar:", ", ".join(item.name for item in player.inventory))
         else:
             print("Din inventarie är tomt.")
     
@@ -334,7 +378,7 @@ def player_command(player, command):
     elif command == "sök":
         if room.searched:
             if room.items:
-                print("Du har redan letat här. Du ser:".join(item.name for item in room.items))
+                print("Du har redan letat här. Du ser:", ", ".join(item.name for item in room.items))
             else:
                 print("Du har redan letat här, det finns inget kvar")
         
@@ -369,7 +413,7 @@ cell = Room("Fängelsecell")
 korridor = Room("Korridor")
 bibliotek = Room("Bibliotek")
 
-cell.connect("norr", korridor, locked=True, key=("rostig nyckel"))
+cell.connect("norr", korridor, locked=True, key="rostig nyckel")
 korridor.connect("söder", cell)
 korridor.connect("öster", bibliotek)
 bibliotek.connect("väster", korridor)
