@@ -8,7 +8,7 @@ import random
 # =========================================
 
 enemy_types = {
-    "Goblin": {
+    "Troll": {
         "hp": 7,
         "armor": 12,
         "strength": 8,
@@ -26,7 +26,7 @@ enemy_types = {
         "charisma": 8,
         "weapon_damage": (1, 6)
     },
-    "Bugbear": {
+    "Björntroll": {
         "hp": 27,
         "armor": 16,
         "strength": 16,
@@ -272,8 +272,9 @@ def attack(attacker, defender):
     total = base + mod
 
     print(f"{attacker.name} slår: {base} modifier {mod} = {total}")
+    print(f"{defender.name} har sköld {defender.armor}")
     if base == 1:
-        print(f"{attacker.naem} fumlar och missar!")
+        print(f"{attacker.name} fumlar och missar!")
     elif base == 20:
         damage = roll_damage(attacker) * 2
         print(f"Kritisk träff! {attacker.name} gör {damage} skada!")
@@ -282,7 +283,7 @@ def attack(attacker, defender):
         print(f"Träff! {attacker.name} gör {damage} skada.")
         defender.take_damage(damage)
     else:
-        print(f"{attacker.name} missar.")
+        print(f"{attacker.name} missar {defender.name}.")
 
 def show_room(player):
     """
@@ -366,7 +367,7 @@ def player_command(player, command):
             attack(player, room.enemy)
 
             if not room.enemy.is_alive():
-                print(f"Du besegrade {room.enemy.name}!")
+                print(f"{player.name} besegrade {room.enemy.name}!")
             else:
                 attack(room.enemy, player)
             if not player.is_alive():
