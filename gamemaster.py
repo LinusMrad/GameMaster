@@ -245,22 +245,39 @@ class Room:
 # =========================================
 
 def roll_d20():
+    """
+    Återger en slumpmässig siffra mellan 1 - 20
+    Detta återspeglar ett tärningskast och beroende på siffan kan vi utföra ett sepcifikt kommando.
+    """
     return random.randint(1, 20)
 
 def roll_damage(attacker):
+    """
+    Definierar skadan som sker i en attack. ÅTerger en slumpmässig siffran i attackeraens range och lägger till dess bonus från karaktärens 
+    strength
+    """
     low, high = attacker.weapon_damage
     damage = random.randint(low, high) + attacker.get_modifier(attacker.strength)
     return max(1, damage)
 
 
 def attack(attacker, defender):
+    """
+    Attackfuntkion, hämtar från roll d20 kollar om siffran är hög nog att träffa (ögre än armor) om träff 
+    hämtar skada från roll_damage om lägre än armor ignen träff. 
+    om rolld_d20 1 kritisk miss om 20 kritisk träff
+    """
     base = roll_d20()
     mod = attacker.get_modifier(attacker.strength)
     total = base + mod
 
     print(f"{attacker.name} slår: {base} modifier {mod} = {total}")
-
-    if total >= defender.armor:
+    if base == 1:
+        print(f"{attacker.naem} fumlar och missar!")
+    elif base == 20:
+        damage = roll_damage(attacker) * 2
+        print(f"Kritisk träff! {attacker.name} gör {damage} skada!")
+    elif total >= defender.armor:
         damage = roll_damage(attacker)
         print(f"Träff! {attacker.name} gör {damage} skada.")
         defender.take_damage(damage)
