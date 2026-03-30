@@ -254,10 +254,13 @@ def roll_damage(attacker):
 
 
 def attack(attacker, defender):
-    roll = roll_d20() + attacker.get_modifier(attacker.strength)
-    print(f"{attacker.name} slår: {roll}")
+    base = roll_d20()
+    mod = attacker.get_modifier(attacker.strength)
+    total = base + mod
 
-    if roll >= defender.armor:
+    print(f"{attacker.name} slår: {base} modifier {mod} = {total}")
+
+    if total >= defender.armor:
         damage = roll_damage(attacker)
         print(f"Träff! {attacker.name} gör {damage} skada.")
         defender.take_damage(damage)
