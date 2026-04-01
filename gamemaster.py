@@ -158,12 +158,14 @@ class Enemy(Character):
 # 3. Item-klasser
 # =========================================
 class Item:
-    def __init__(self, name, description=""):
+    def __init__(self, name, description="", hidden=False, dc=10):
         self.name = name
         self.description = description
+        self.hidden = hidden
+        self.dc = dc
     
     def use(self, player):
-        print(f"Du kan itne använda{self.name} här.")
+        print(f"Du kan inte använda{self.name} här.")
 
 class Key(Item):
     def use(self, player):
@@ -202,13 +204,13 @@ class Book(Item):
 room_types = {
     "Fängelsecell": {
         "description": "En kall och fuktig cell med en dörr",
-        "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.")],
+        "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.", hidden=True, dc=2)],
         "enemy" : None
     },
     "Korridor":{
         "description": "En mörk korridor med fladdrande facklor",
         "items": [],
-        "enemy": "Goblin"
+        "enemy": "Troll"
     },
     "Bibliotek": {
         "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
@@ -285,6 +287,38 @@ def attack(attacker, defender):
     else:
         print(f"{attacker.name} missar {defender.name}.")
 
+# Check för handlingar i världen, tex smyga förbi fiende
+def skill_check(character, stat_value, dc, action_name="handling"):
+    """
+    Check för handlingar i världen, tex smyga förbi fiende, leta och upptäcka dolda föremål.
+    """
+    base = roll_d20()
+    mod = character.get_modifier(stat_value)
+    total = base + mod
+
+    print(f"{character.name} försöker {action_name}")
+    print(f"slår {base} modifier {mod} = {total}")
+    print(f"Svårighetsgrad: {dc}")
+
+    if base == 1:
+        print("Kritiskt misslyckande!")
+        return False
+    elif base == 20:
+        print("Kritisk framgång!")
+        return True
+    elif total >= dc:
+        print("Lyckades!")
+        return True
+    else:
+        print("Misslyckades!")
+        return False
+
+    #smyga
+def sneak(attacker, defender):
+    stealth_dc = 10 + defender.get_modifier(defender.agility)
+    return skill_check(attacker, attacker.agility, stealth_dc, "smyga förbi")
+
+
 def show_room(player):
     """
     Visar information om rummet spelaren befinner sig i.
@@ -318,7 +352,7 @@ def player_command(player, command):
     
     # Hjälp
     elif command == "hjälp":
-        print("Kommandon: norr, söder, öster, väster, kolla, sök, inventarie, ta[item], attackera, avsluta")
+        print("Kommandon: norr, söder, öster, väster, kolla, sök, inventarie, ta[föremål], attackera, avsluta, smyg")
 
     #Titta på rummet igen
     elif command == "kolla":
@@ -327,7 +361,7 @@ def player_command(player, command):
     # visa inventarie
     elif command == "inventarie":
         if player.inventory:
-            print("Du gar:", ", ".join(item.name for item in player.inventory))
+            print("Du har:", ", ".join(item.name for item in player.inventory))
         else:
             print("Din inventarie är tomt.")
     
@@ -395,24 +429,53 @@ def player_command(player, command):
             player.current_room = exit_data["room"]
             show_room(player)
 
+    # smyga
+    elif command == "smyg":
+        if room.enemy and room.enemy.is_alive():
+            if sneak(player, room.enemy):
+                print("Du undviker strid")
+            else:
+                print(f"{room.enemy.name} upptäcker dig!")
+                attack(room.enemy, player)
+                if not player.is_alive():
+                    print("du har dött...")
+                    return False
+        else:
+            print("Det finns ingen fiende att smyga förbi")
+
     # undersök
     elif command == "sök":
         if room.searched:
-            if room.items:
-                print("Du har redan letat här. Du ser:", ", ".join(item.name for item in room.items))
+            visible_items = [item.name for item in room.items if not item.hidden]
+
+            if visible_items:
+                print("Du har redan letat här du ser:", ", ".join(visible_items))
             else:
-                print("Du har redan letat här, det finns inget kvar")
-        
+                print("Du har redan letat här, det finn inget kvar")
+
         else:
             room.searched = True
-            if room.items:
-                print("Du letar genom rummet och hittar:", ",".join(item.name for item in room.items))
+            found_items = []
+            print("Du letar genom rummet...")
+
+            for item in room.items:
+                #om föremålet inte är dold, hitta direkt
+                if not item.hidden:
+                    found_items.append(item.name)
+                
+                #om föremålet är dolt gör en check
+                else:
+                    if skill_check(player, player.intelligence, item.dc, f"hitta {item.name}"):
+                        item.hidden = False
+                        found_items.append(item.name)
+            
+            if found_items:
+                print("Du hittar:", ", ".join(found_items))
             else:
-                print("Du letar igenom rummet men hittar inget")
-    
-    else:
-        print("Ogiltigt kommando")
+                print("Du hittar inget...")
     return True
+                                   
+
 
 def player_loop(player):
     """Spelets huvudloop"""
