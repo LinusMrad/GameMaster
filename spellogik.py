@@ -17,7 +17,7 @@ enemy_types = {
         "charisma": 6,
         "weapon_damage": (1, 4)
     },
-    "Hobgoblin": {
+    "Gast": {
         "hp": 11,
         "armor": 14,
         "strength": 12,
@@ -201,17 +201,35 @@ class Book(Item):
 # =========================================
 # 4. Spelvärldsdata
 # =========================================
+"""
+rumsmall
+        "namn": {
+        "description":,
+        "items":,
+        "Enemy":,
+    },
+"""
 room_types = {
-    "Fängelsecell": {
-        "description": "En kall och fuktig cell med en dörr",
+    "Källare": {
+        "description": "En kall och fuktig källare",
         "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.", hidden=True, dc=2)],
         "enemy" : None
-    },
+    }, #Connect: Norr Korridor(öppen), Väster barack(låst nyckel i rum, lätt check) söder bergsspricka(hemlig dörr hög sök)
+
+    "Barracker": {
+        "description":"Barracker med sängar, mat och logi för troll",
+        "items": ["Svärd"(hidden=False,)],
+        "Enemy": "Troll"
+    },# Connect:  öster källare
+
     "Korridor":{
         "description": "En mörk korridor med fladdrande facklor",
         "items": [],
-        "enemy": "Troll"
-    },
+        "enemy": None
+    }, #Connect söder källare(öppen), väster kryptan
+
+
+
     "Bibliotek": {
         "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
         "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."), 
@@ -247,6 +265,13 @@ class Room:
 # =========================================
 # 6. Hjälpfunktioner / spellogik
 # =========================================
+
+def narrate(event_type, data):
+    """
+    Funktion för användandet av AI-chatbot för berättelsen.
+    """
+    print(f"[AI BESKRIVNING HÄR] {event_type} - {data}")
+
 
 def roll_d20():
     """
@@ -370,7 +395,16 @@ def player_command(player, command):
     
     # Hjälp
     elif command == "hjälp":
-        print("Kommandon: norr, söder, öster, väster, kolla, sök, inventarie, ta[föremål], attackera, avsluta, smyg")
+        print("Kommandon: norr, söder, öster, väster, kolla, sök, inventarie, ta[föremål], attackera, avsluta, smyg, status")
+
+    elif command == "status":
+        print(f"Namn: {player.name}")
+        print(f"HP: {player.hp}")
+        print(f"Rustning: {player.armor}")
+        print(f"Styrka: {player.strength}")
+        print(f"Smidighet: {player.agility}")
+        print(f"Intelligens: {player.intelligence}")
+        print(f"Karisma: {player.charisma}")
 
     #Titta på rummet igen
     elif command == "kolla":
@@ -524,6 +558,14 @@ cell.connect("norr", korridor, locked=True, hidden=True, dc=1, key="rostig nycke
 korridor.connect("söder", cell)
 korridor.connect("öster", bibliotek)
 bibliotek.connect("väster", korridor)
+"""
+narrate("enter_room", {
+    "room": room.room_type,
+    "description": room.description,
+    "enemy": room.enemy.name if room.enemy and room.enemy.is_alive() else None,
+    "items": [item.name for item in room.items if not item.hidden]
+})
+"""
 
 # =========================================
 # 8. Skapa spelaren
