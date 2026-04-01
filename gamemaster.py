@@ -235,11 +235,13 @@ class Room:
         self.exits = {}
         self.searched = False
 
-    def connect(self, direction, room, locked=False, key=None):
+    def connect(self, direction, room, locked=False, key=None, hidden=False, dc=10):
         self.exits[direction] = {
             "room": room,
             "locked": locked,
-            "key": key
+            "key": key,
+            "hidden": hidden,
+            "dc": dc
         }    
 
 # =========================================
@@ -280,6 +282,7 @@ def attack(attacker, defender):
     elif base == 20:
         damage = roll_damage(attacker) * 2
         print(f"Kritisk träff! {attacker.name} gör {damage} skada!")
+        defender.take_damage(damage)
     elif total >= defender.armor:
         damage = roll_damage(attacker)
         print(f"Träff! {attacker.name} gör {damage} skada.")
@@ -312,6 +315,18 @@ def skill_check(character, stat_value, dc, action_name="handling"):
     else:
         print("Misslyckades!")
         return False
+    
+
+def silent_check(character, stat_value, dc):
+    base = roll_d20()
+    mod = character.get_modifier(stat_value)
+    total = base + mod
+
+    if base == 1:
+        return False
+    if base == 20:
+        return True
+    return total >= dc
 
     #smyga
 def sneak(attacker, defender):
@@ -328,19 +343,22 @@ def show_room(player):
     print(f"Du är i: {room.room_type}")
     print(room.description)
 
-    if room.searched and room.items:
-        print("Du ser:", ", ".join(item.name for item in room.items))
+    visible_items = [item.name for item in room.items if not item.hidden]
+    if visible_items:
+        print("Du ser:", ",".join(visible_items))
 
     if room.enemy and room.enemy.is_alive():
-        print(f"En fiende finns här: {room.enemy.name} (HP: {room.enemy.hp})")
+        print(f"En fiende finns här: {room.enemy.name}")
 
-    if room.exits:
-        print("Utgångar:")
-        for direction, exit_data in room.exits.items():
+    visible_exits = []
+    for direction, exit_data in room.exits.items():
+        if not exit_data["hidden"]:
             if exit_data["locked"]:
-                print(f"{direction} (låst)")
+                visible_exits.append(f"{direction} (låst)")
             else:
-                print(f"{direction}")
+                visible_exits.append(direction)
+    if visible_exits:
+        print("Utgångar:", ", ".join(visible_exits))
 
 def player_command(player, command):
     room = player.current_room
@@ -393,7 +411,7 @@ def player_command(player, command):
         if found_item:
             found_item.use(player)
         else:
-            print("Du har itne det föremålet")
+            print("Du har inte det föremålet")
 
     # Attackera fiende
     elif command == "attackera":
@@ -411,7 +429,7 @@ def player_command(player, command):
             print("Det finns inga levande fiender här.")
 
     #rörelse
-    elif command in room.exits:
+    elif command in room.exits and not room.exits[command]["hidden"]:
         exit_data = room.exits[command]
 
         if exit_data["locked"]:
@@ -443,39 +461,44 @@ def player_command(player, command):
         else:
             print("Det finns ingen fiende att smyga förbi")
 
-    # undersök
     elif command == "sök":
-        if room.searched:
-            visible_items = [item.name for item in room.items if not item.hidden]
+        print(f"{player.name} söker genom rummet...")
 
-            if visible_items:
-                print("Du har redan letat här du ser:", ", ".join(visible_items))
-            else:
-                print("Du har redan letat här, det finn inget kvar")
+        found_items = []
+        found_exits = []
 
-        else:
-            room.searched = True
-            found_items = []
-            print("Du letar genom rummet...")
-
-            for item in room.items:
-                #om föremålet inte är dold, hitta direkt
-                if not item.hidden:
+        # leta efter dolda föremål
+        for item in room.items:
+            if item.hidden:
+                if silent_check(player, player.intelligence, item.dc):
+                    item.hidden = False
                     found_items.append(item.name)
-                
-                #om föremålet är dolt gör en check
-                else:
-                    if skill_check(player, player.intelligence, item.dc, f"hitta {item.name}"):
-                        item.hidden = False
-                        found_items.append(item.name)
-            
-            if found_items:
-                print("Du hittar:", ", ".join(found_items))
-            else:
-                print("Du hittar inget...")
-    return True
-                                   
 
+        # leta efter dolda dörrar
+        for direction, exit_data in room.exits.items():
+            if exit_data["hidden"]:
+                if silent_check(player, player.intelligence, exit_data["dc"]):
+                    exit_data["hidden"] = False
+                    found_exits.append(direction)
+
+        # visa även redan synliga föremål
+        visible_items = [item.name for item in room.items if not item.hidden]
+
+        if found_items:
+            print("Du hittar:", ", ".join(found_items))
+
+        if found_exits:
+            print("Du upptäcker en dold passage:", ", ".join(found_exits))
+
+        if not found_items and not found_exits:
+            if visible_items:
+                print("Du hittar inget nytt.")
+            else:
+                print("Du hittar inget.")
+  
+    else:
+        print("Ogiltigt kommando")
+    return True
 
 def player_loop(player):
     """Spelets huvudloop"""
@@ -497,7 +520,7 @@ cell = Room("Fängelsecell")
 korridor = Room("Korridor")
 bibliotek = Room("Bibliotek")
 
-cell.connect("norr", korridor, locked=True, key="rostig nyckel")
+cell.connect("norr", korridor, locked=True, hidden=True, dc=1, key="rostig nyckel")
 korridor.connect("söder", cell)
 korridor.connect("öster", bibliotek)
 bibliotek.connect("väster", korridor)
