@@ -202,7 +202,7 @@ class Book(Item):
 # 4. Spelvärldsdata
 # =========================================
 """
-rumsmall
+"rumsmall"
         "namn": {
         "description":,
         "items":,
@@ -226,16 +226,37 @@ room_types = {
         "description": "En mörk korridor med fladdrande facklor",
         "items": [],
         "enemy": None
-    }, #Connect söder källare(öppen), väster kryptan
+    }, #Connect söder källare(öppen), väster kryptan(öppen)
 
 
+    "Ambros Kypta": {
+    "description":"En dammig krypta med tre stående kistor.",
+    "items": None,# eventuellt nyckel till slavkammare
+    "Enemy": "Gast",
+    }, # connect söder korridor (olåst) öster slavkammare (olåst) Norr vapenkammare (gömd dörr, svår) 
+
+    "slavkammare": {
+    "description": "Ett lånsmalt rum fyllt med celler längs ena väggen, en mager människa finns i en av cellerna",
+    "items":None, # eventuellt health potion eller annat hjälpverktyg
+    "Enemy":None,
+    #"NPC": "slav(svår check att få ur information)",
+}, #connect väster ambros krypta
+
+    "Vapenkammare": {
+    "description": "Vapenkammare fylld med rader av svärd av olika slag",
+    "items": ["Svärd"(hidden=False,)],
+    "Enemy": None,
+}, # connect söder, ambros kypta
 
     "Bibliotek": {
         "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
         "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."), 
                   Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # lägg till karta och bok
         "enemy": "Hobgoblin"
-    }
+    },
+
+
+
 }
 
 # =========================================
