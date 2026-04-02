@@ -70,6 +70,7 @@ class Player(Character):
         super().__init__(name, hp, armor, strength, agility, intelligence, charisma, weapon_damage)
         self.inventory = []
         self.current_room = None
+        self.equiped_weapon = None
 
 
 class Krigare(Player):
@@ -124,9 +125,6 @@ class Alv(Player):
             charisma=8,
             weapon_damage=(1, 8)
         )
-
-
-
 
 
 # Fiende
@@ -198,6 +196,16 @@ class Book(Item):
         print(f"Du läser {self.name}")
         print(self.text)
 
+class Weapon(Item):
+    def __init__(self, name, damage_bonus=0, attack_bonus=0, description=""):
+        super().__init__(name, description)
+        self.damage_bonus = damage_bonus
+        self.attack_bonus = attack_bonus
+
+    def use(self, player):
+        player.equipped_weapon = self
+        print(f"Du utrustar {self.name}")
+
 # =========================================
 # 4. Spelvärldsdata
 # =========================================
@@ -218,7 +226,7 @@ room_types = {
 
     "Barracker": {
         "description":"Barracker med sängar, mat och logi för troll",
-        "items": ["Svärd"(hidden=False,)],
+        "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", 1, 2, hidden=False)],
         "Enemy": "Troll"
     },# Connect:  öster källare
 
@@ -244,7 +252,7 @@ room_types = {
 
     "Vapenkammare": {
     "description": "Vapenkammare fylld med rader av svärd av olika slag",
-    "items": ["Svärd"(hidden=False,)], # väldigt starkt svärd. 
+    "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", 1, 2, hidden=False)],
     "Enemy": None,
     }, # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
 
@@ -273,16 +281,6 @@ room_types = {
         "items":None, # eventuellt en trasure som du vinenr spelet med
         "Enemy":"Ealdror",
     },
-
-
-    "Bibliotek": {
-        "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
-        "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."), 
-                  Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
-        "enemy": "Hobgoblin"
-    },
-
-
 
 }
 
