@@ -239,19 +239,46 @@ room_types = {
     "description": "Ett lånsmalt rum fyllt med celler längs ena väggen, en mager människa finns i en av cellerna",
     "items":None, # eventuellt health potion eller annat hjälpverktyg
     "Enemy":None,
-    #"NPC": "slav(svår check att få ur information)",
-}, #connect väster ambros krypta
+    #"NPC": "slav(Namn:Dudu svår check att få ur information om vart man kan gå för att besegra bossen.)",
+    }, #connect väster ambros krypta
 
     "Vapenkammare": {
     "description": "Vapenkammare fylld med rader av svärd av olika slag",
-    "items": ["Svärd"(hidden=False,)],
+    "items": ["Svärd"(hidden=False,)], # väldigt starkt svärd. 
     "Enemy": None,
-}, # connect söder, ambros kypta
+    }, # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
+
+    "Bergsspricka": {
+    "description":"En spricka som uppstått i bergrgunden där slottet står. en stank av ruttet kött fyller luften",
+    "items": None,
+    "Enemy": "Nothic",
+    }, #connect öster ambros krypta söder, källare, väster vaktbaracker
+
+        "Vaktbarracker": {
+        "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
+        "items": None,
+        "Enemy": "Troll, Goblin",
+    }, # connect öster, bergspricka, norr magikerns lya
+
+        "Magikerns lya": {
+        "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
+        "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."),
+                  Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
+        "Enemy": None,
+    },  # connect, söder Vaktbaracker öster 
+
+        "Ealdrors rum": { #byt namn sen
+        "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng"
+        " och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
+        "items":None, # eventuellt en trasure som du vinenr spelet med
+        "Enemy":"Ealdror",
+    },
+
 
     "Bibliotek": {
         "description": "Ett dammigt bibliotek fullt av gamla böcker och kartor",
         "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."), 
-                  Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # lägg till karta och bok
+                  Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
         "enemy": "Hobgoblin"
     },
 
