@@ -197,7 +197,7 @@ class Book(Item):
         print(self.text)
 
 class Weapon(Item):
-    def __init__(self, name, damage_bonus=0, attack_bonus=0, description=""):
+    def __init__(self, name, description="", damage_bonus=0, attack_bonus=0, hidden=False):
         super().__init__(name, description)
         self.damage_bonus = damage_bonus
         self.attack_bonus = attack_bonus
@@ -226,7 +226,7 @@ room_types = {
 
     "Barracker": {
         "description":"Barracker med sängar, mat och logi för troll",
-        "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", 1, 2, hidden=False)],
+        "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", damage_bonus=1, attack_bonus=2, hidden=False)],
         "Enemy": "Troll"
     },# Connect:  öster källare
 
@@ -252,7 +252,7 @@ room_types = {
 
     "Vapenkammare": {
     "description": "Vapenkammare fylld med rader av svärd av olika slag",
-    "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", 1, 2, hidden=False)],
+    "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", damage_bonus=1, attack_bonus=2, hidden=False)],
     "Enemy": None,
     }, # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
 
@@ -333,6 +333,8 @@ def roll_damage(attacker):
     """
     low, high = attacker.weapon_damage
     damage = random.randint(low, high) + attacker.get_modifier(attacker.strength)
+    if isinstance(attacker, player) and attacker.equipped_weapon:
+        damage += attacker.equipped_weapon.damage_bonus
     return max(1, damage)
 
 
@@ -344,9 +346,12 @@ def attack(attacker, defender):
     """
     base = roll_d20()
     mod = attacker.get_modifier(attacker.strength)
-    total = base + mod
+    weapon_bonus= 0
+    if isinstance(attacker, player) and attacker.equipped_weapon:
+        weapon_bonus = attacker.equipped_weapon.attack_bonus
+    total = base + mod + weapon_bonus
 
-    print(f"{attacker.name} slår: {base} modifier {mod} = {total}")
+    print(f"{attacker.name} slår: {base} modifier {mod} vapenbonus {weapon_bonus} = {total}")
     print(f"{defender.name} har sköld {defender.armor}")
     if base == 1:
         print(f"{attacker.name} fumlar och missar!")
@@ -460,6 +465,8 @@ def player_command(player, command):
     elif command == "inventarie":
         if player.inventory:
             print("Du har:", ", ".join(item.name for item in player.inventory))
+            if player.equipped_weapon:
+                print(f"Utrustad: {player.equipped_weapon.name}")
         else:
             print("Din inventarie är tomt.")
     
