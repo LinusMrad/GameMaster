@@ -603,12 +603,17 @@ def player_loop(player):
 # 7. Bygg spelvärlden
 # =========================================
  
-cell = Room("Fängelsecell")
+kallare = Room("Källare")
 korridor = Room("Korridor")
 bibliotek = Room("Bibliotek")
+#Connect: Norr Korridor(öppen), Väster barack(låst nyckel i rum, lätt check) söder bergsspricka(hemlig dörr hög sök)
 
-cell.connect("norr", korridor, locked=True, hidden=True, dc=1, key="rostig nyckel")
-korridor.connect("söder", cell)
+# Utgångar källare
+kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
+kallare.connect("väster", barack, locked=True, hidden=True, dc=4, key="rostig nyckel")
+kallare.connect("söder", bergspricka, locked=False, hidden=True, dc=14, key=None)
+
+korridor.connect("söder", kallare)
 korridor.connect("öster", bibliotek)
 bibliotek.connect("väster", korridor)
 """
