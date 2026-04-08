@@ -606,12 +606,36 @@ def player_loop(player):
 kallare = Room("Källare")
 korridor = Room("Korridor")
 bibliotek = Room("Bibliotek")
-#Connect: Norr Korridor(öppen), Väster barack(låst nyckel i rum, lätt check) söder bergsspricka(hemlig dörr hög sök)
+baracker = Room("Baracker")
+krypta = Room("Ambros Kypta")
+slavkammare = Room("slavkammare")
+vapenkammare = Room
+
 
 # Utgångar källare
 kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
-kallare.connect("väster", barack, locked=True, hidden=True, dc=4, key="rostig nyckel")
+kallare.connect("väster", baracker, locked=True, hidden=True, dc=4, key="rostig nyckel")
 kallare.connect("söder", bergspricka, locked=False, hidden=True, dc=14, key=None)
+
+# utgångar Barack 
+baracker.connect("öster", kallare, locked=False, hidden= False, dc=0, key=None) 
+
+# Utgångar korridor 
+korridor.connect("söder", kallare, locked=False, hidden=False, dc=0, key=None)
+korridor.connect("väster", krypta , locked=False, hidden=False, dc=0, key=None)
+
+# Utgångar Ambros krypta # connect söder korridor (olåst) öster slavkammare (olåst) Norr vapenkammare (gömd dörr, svår)
+krypta.connect("söder", korridor, locked=False, hidden=False, dc=0, key=None)
+krypta.connect("öster", slavkammare, locked=False, hidden=False, dc=0, key=None)
+krypta.connect("söder", vapenkammare, locked=False, hidden=True, dc=16, key=None)
+
+# Utgångar slavkammare 
+slavkammare.connect("väster", krypta, locked=False, hidden=False, dc=0, key=None)
+
+# Utgångar vapenkammare # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
+
+
+
 
 korridor.connect("söder", kallare)
 korridor.connect("öster", bibliotek)
