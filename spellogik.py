@@ -210,11 +210,14 @@ class Weapon(Item):
 # 4. Spelvärldsdata
 # =========================================
 """
+Här lägger man in de olika rummen man vill använda för sitt spel, nedan finns en mall för hur rummen ska se ut.
+
+
 "rumsmall"
         "namn": {
         "description":,
         "items":,
-        "Enemy":,
+        "enemy":,
     },
 """
 room_types = {
@@ -224,10 +227,10 @@ room_types = {
         "enemy" : None
     }, #Connect: Norr Korridor(öppen), Väster barack(låst nyckel i rum, lätt check) söder bergsspricka(hemlig dörr hög sök)
 
-    "Barracker": {
+    "Baracker": {
         "description":"Barracker med sängar, mat och logi för troll",
         "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", damage_bonus=1, attack_bonus=2, hidden=False)],
-        "Enemy": "Troll"
+        "enemy": "Troll"
     },# Connect:  öster källare
 
     "Korridor":{
@@ -236,50 +239,49 @@ room_types = {
         "enemy": None
     }, #Connect söder källare(öppen), väster kryptan(öppen)
 
-
     "Ambros Kypta": {
     "description":"En dammig krypta med tre stående kistor.",
-    "items": None,# eventuellt nyckel till slavkammare
-    "Enemy": "Gast",
+    "items": [],# eventuellt nyckel till slavkammare
+    "enemy": "Gast",
     }, # connect söder korridor (olåst) öster slavkammare (olåst) Norr vapenkammare (gömd dörr, svår) 
 
-    "slavkammare": {
+    "Slavkammare": {
     "description": "Ett lånsmalt rum fyllt med celler längs ena väggen, en mager människa finns i en av cellerna",
-    "items":None, # eventuellt health potion eller annat hjälpverktyg
-    "Enemy":None,
+    "items":[], # eventuellt health potion eller annat hjälpverktyg
+    "enemy":None,
     #"NPC": "slav(Namn:Dudu svår check att få ur information om vart man kan gå för att besegra bossen.)",
     }, #connect väster ambros krypta
 
     "Vapenkammare": {
     "description": "Vapenkammare fylld med rader av svärd av olika slag",
     "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", damage_bonus=1, attack_bonus=2, hidden=False)],
-    "Enemy": None,
+    "enemy": None,
     }, # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
 
     "Bergsspricka": {
     "description":"En spricka som uppstått i bergrgunden där slottet står. en stank av ruttet kött fyller luften",
-    "items": None,
-    "Enemy": "Nothic",
+    "items": [],
+    "enemy": "Nothic",
     }, #connect öster ambros krypta söder, källare, väster vaktbaracker
 
     "Vaktbarracker": {
     "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
-    "items": None,
-    "Enemy": "Troll, Goblin",
+    "items": [],
+    "enemy": "Troll, Goblin",
     }, # connect öster, bergspricka, norr magikerns lya
 
     "Magikerns lya": {
     "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
     "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."),
                 Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
-    "Enemy": None,
+    "enemy": None,
     },  # connect, söder Vaktbaracker öster, norr ealdrors rum
 
     "Ealdrors rum": { #
     "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng"
     " och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
-    "items":None, # eventuellt en trasure som du vinenr spelet med
-    "Enemy":"Ealdror",
+    "items":[], # eventuellt en trasure som du vinenr spelet med
+    "enemy":"Ealdror",
     }, # connect söder magikerns lya
 
 }
@@ -295,7 +297,7 @@ class Room:
         
         self.description = data["description"]
         self.items = data["items"].copy()
-        self.enemy = Enemy(data["enemy"]) if data["enemy"] else None
+        self.enemy = enemy(data["enemy"]) if data["enemy"] else None
         self.exits = {}
         self.searched = False
 
@@ -605,15 +607,14 @@ def player_loop(player):
  
 kallare = Room("Källare")
 korridor = Room("Korridor")
-bibliotek = Room("Bibliotek")
 baracker = Room("Baracker")
 krypta = Room("Ambros Kypta")
-slavkammare = Room("slavkammare")
-vapenkammare = Room("vapenkammare")
+slavkammare = Room("Slavkammare")
+vapenkammare = Room("Vapenkammare")
 bergsspricka = Room("Bergsspricka")
-vaktbaracker = Room("vaktbaracker")
-magiker = Room("magikerns lya")
-ealdrorslya = Room("ealdrors lya")
+vaktbaracker = Room("Vaktbaracker")
+magiker = Room("Magikerns lya")
+ealdrorslya = Room("Ealdrors lya")
 
 # Utgångar källare
 kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
@@ -640,9 +641,9 @@ vapenkammare.connect("söder", krypta, locked=False, hidden=False, dc=0, key=Non
 vapenkammare.connect("väster", bergsspricka, locked=False, hidden=True, dc=12, key=None)
 
 # Utgångar bergspricka 
-bergsspricka.connect("öster", krypta, locked=False, hidden=False, dc=0 key=None)
-bergsspricka.connect("söder", kallare, locked=False, hidden=False, dc=0 key=None)
-bergsspricka.connect("väster", vaktbaracker, locked=False, hidden=False, dc=0 key=None)
+bergsspricka.connect("öster", krypta, locked=False, hidden=False, dc=0, key=None)
+bergsspricka.connect("söder", kallare, locked=False, hidden=False, dc=0, key=None)
+bergsspricka.connect("väster", vaktbaracker, locked=False, hidden=False, dc=0, key=None)
 
 # Utgångar vaktbaracker 
 vaktbaracker.connect("öster", bergsspricka,locked=False, hidden=False, dc=0, key=None)
@@ -656,9 +657,6 @@ magiker.connect("norr", ealdrorslya, locked=False, hidden=False, dc=0, key=None)
 ealdrorslya.connect("söder", magiker, locked=False, hidden=False, dc=0, key=None)
 
 
-korridor.connect("söder", kallare)
-korridor.connect("öster", bibliotek)
-bibliotek.connect("väster", korridor)
 """
 narrate("enter_room", {
     "room": room.room_type,
