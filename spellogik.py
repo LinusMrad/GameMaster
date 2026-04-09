@@ -70,7 +70,7 @@ class Player(Character):
         super().__init__(name, hp, armor, strength, agility, intelligence, charisma, weapon_damage)
         self.inventory = []
         self.current_room = None
-        self.equiped_weapon = None
+        self.equipped_weapon = None
 
 
 class Krigare(Player):
@@ -267,7 +267,7 @@ room_types = {
     "Vaktbarracker": {
     "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
     "items": [],
-    "enemy": "Troll, Goblin",
+    "enemy": ["Troll, Goblin",]
     }, # connect öster, bergspricka, norr magikerns lya
 
     "Magikerns lya": {
@@ -297,7 +297,7 @@ class Room:
         
         self.description = data["description"]
         self.items = data["items"].copy()
-        self.enemy = enemy(data["enemy"]) if data["enemy"] else None
+        self.enemy = Enemy(data["enemy"]) if data["enemy"] else None
         self.exits = {}
         self.searched = False
 
@@ -335,7 +335,7 @@ def roll_damage(attacker):
     """
     low, high = attacker.weapon_damage
     damage = random.randint(low, high) + attacker.get_modifier(attacker.strength)
-    if isinstance(attacker, player) and attacker.equipped_weapon:
+    if isinstance(attacker, Player) and attacker.equipped_weapon:
         damage += attacker.equipped_weapon.damage_bonus
     return max(1, damage)
 
@@ -349,7 +349,7 @@ def attack(attacker, defender):
     base = roll_d20()
     mod = attacker.get_modifier(attacker.strength)
     weapon_bonus= 0
-    if isinstance(attacker, player) and attacker.equipped_weapon:
+    if isinstance(attacker, Player) and attacker.equipped_weapon:
         weapon_bonus = attacker.equipped_weapon.attack_bonus
     total = base + mod + weapon_bonus
 
