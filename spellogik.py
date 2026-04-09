@@ -262,25 +262,25 @@ room_types = {
     "Enemy": "Nothic",
     }, #connect öster ambros krypta söder, källare, väster vaktbaracker
 
-        "Vaktbarracker": {
-        "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
-        "items": None,
-        "Enemy": "Troll, Goblin",
+    "Vaktbarracker": {
+    "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
+    "items": None,
+    "Enemy": "Troll, Goblin",
     }, # connect öster, bergspricka, norr magikerns lya
 
-        "Magikerns lya": {
-        "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
-        "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."),
-                  Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
-        "Enemy": None,
-    },  # connect, söder Vaktbaracker öster 
+    "Magikerns lya": {
+    "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
+    "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."),
+                Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
+    "Enemy": None,
+    },  # connect, söder Vaktbaracker öster, norr ealdrors rum
 
-        "Ealdrors rum": { #byt namn sen
-        "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng"
-        " och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
-        "items":None, # eventuellt en trasure som du vinenr spelet med
-        "Enemy":"Ealdror",
-    },
+    "Ealdrors rum": { #
+    "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng"
+    " och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
+    "items":None, # eventuellt en trasure som du vinenr spelet med
+    "Enemy":"Ealdror",
+    }, # connect söder magikerns lya
 
 }
 
@@ -609,7 +609,9 @@ bibliotek = Room("Bibliotek")
 baracker = Room("Baracker")
 krypta = Room("Ambros Kypta")
 slavkammare = Room("slavkammare")
-vapenkammare = Room
+vapenkammare = Room("vapenkammare")
+bergsspricka = Room("Bergsspricka")
+vaktbaracker = Room("vaktbaracker")
 
 
 # Utgångar källare
@@ -624,7 +626,7 @@ baracker.connect("öster", kallare, locked=False, hidden= False, dc=0, key=None)
 korridor.connect("söder", kallare, locked=False, hidden=False, dc=0, key=None)
 korridor.connect("väster", krypta , locked=False, hidden=False, dc=0, key=None)
 
-# Utgångar Ambros krypta # connect söder korridor (olåst) öster slavkammare (olåst) Norr vapenkammare (gömd dörr, svår)
+# Utgångar Ambros krypta 
 krypta.connect("söder", korridor, locked=False, hidden=False, dc=0, key=None)
 krypta.connect("öster", slavkammare, locked=False, hidden=False, dc=0, key=None)
 krypta.connect("söder", vapenkammare, locked=False, hidden=True, dc=16, key=None)
@@ -632,9 +634,20 @@ krypta.connect("söder", vapenkammare, locked=False, hidden=True, dc=16, key=Non
 # Utgångar slavkammare 
 slavkammare.connect("väster", krypta, locked=False, hidden=False, dc=0, key=None)
 
-# Utgångar vapenkammare # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
+# Utgångar vapenkammare 
+vapenkammare.connect("söder", krypta, locked=False, hidden=False, dc=0, key=None)
+vapenkammare.connect("väster", bergsspricka, locked=False, hidden=True, dc=12, key=None)
 
+# Utgångar bergspricka #connect öster ambros krypta söder, källare, väster vaktbaracker
+bergsspricka.connect("öster", krypta, locked=False, hidden=False, dc=0 key=None)
+bergsspricka.connect("söder", kallare, locked=False, hidden=False, dc=0 key=None)
+bergsspricka.connect("väster", vaktbaracker, locked=False, hidden=False, dc=0 key=None)
 
+# Utgångar vaktbaracker # connect öster, bergspricka, norr magikerns lya
+vaktbaracker.connect("öster", bergsspricka,locked=False, hidden=False, dc=0, key=None)
+vaktbaracker.connect("norr", magiker, locked=False, hidden=False, dc=0, key=None)
+
+# Utgångar magikerns lya
 
 
 korridor.connect("söder", kallare)
