@@ -612,12 +612,13 @@ slavkammare = Room("slavkammare")
 vapenkammare = Room("vapenkammare")
 bergsspricka = Room("Bergsspricka")
 vaktbaracker = Room("vaktbaracker")
-
+magiker = Room("magikerns lya")
+ealdrorslya = Room("ealdrors lya")
 
 # Utgångar källare
 kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
 kallare.connect("väster", baracker, locked=True, hidden=True, dc=4, key="rostig nyckel")
-kallare.connect("söder", bergspricka, locked=False, hidden=True, dc=14, key=None)
+kallare.connect("söder", bergsspricka, locked=False, hidden=True, dc=14, key=None)
 
 # utgångar Barack 
 baracker.connect("öster", kallare, locked=False, hidden= False, dc=0, key=None) 
@@ -638,16 +639,21 @@ slavkammare.connect("väster", krypta, locked=False, hidden=False, dc=0, key=Non
 vapenkammare.connect("söder", krypta, locked=False, hidden=False, dc=0, key=None)
 vapenkammare.connect("väster", bergsspricka, locked=False, hidden=True, dc=12, key=None)
 
-# Utgångar bergspricka #connect öster ambros krypta söder, källare, väster vaktbaracker
+# Utgångar bergspricka 
 bergsspricka.connect("öster", krypta, locked=False, hidden=False, dc=0 key=None)
 bergsspricka.connect("söder", kallare, locked=False, hidden=False, dc=0 key=None)
 bergsspricka.connect("väster", vaktbaracker, locked=False, hidden=False, dc=0 key=None)
 
-# Utgångar vaktbaracker # connect öster, bergspricka, norr magikerns lya
+# Utgångar vaktbaracker 
 vaktbaracker.connect("öster", bergsspricka,locked=False, hidden=False, dc=0, key=None)
 vaktbaracker.connect("norr", magiker, locked=False, hidden=False, dc=0, key=None)
 
 # Utgångar magikerns lya
+magiker.connect("söder", vaktbaracker, locked=False, hidden=False, dc=0, key=None)
+magiker.connect("norr", ealdrorslya, locked=False, hidden=False, dc=0, key=None)
+
+# Utgångar Ealdrors lya
+ealdrorslya.connect("söder", magiker, locked=False, hidden=False, dc=0, key=None)
 
 
 korridor.connect("söder", kallare)
