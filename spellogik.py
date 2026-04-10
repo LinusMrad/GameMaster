@@ -6,6 +6,18 @@ import random
 # =========================================
 # 1. Spelardata / fiendedata
 # =========================================
+"""
+fiendemall
+    "namn": {
+        "hp": ,
+        "armor": ,
+        "strength": ,
+        "agility": ,
+        "intelligence": ,
+        "charisma": ,
+        "weapon_damage":
+    },
+"""
 
 enemy_types = {
     "Troll": {
@@ -26,15 +38,24 @@ enemy_types = {
         "charisma": 8,
         "weapon_damage": (1, 6)
     },
-    "Björntroll": {
-        "hp": 27,
-        "armor": 16,
-        "strength": 16,
-        "agility": 10,
-        "intelligence": 8,
-        "charisma": 7,
-        "weapon_damage": (2, 6)
-    }
+    "Nothic": {
+        "hp": 45,
+        "armor": 15,
+        "strength": 14,
+        "agility": 16,
+        "intelligence": 13,
+        "charisma": 8,
+        "weapon_damage": (3, 6)
+    },
+    "Ealdror": {
+        "hp":22,
+        "armor":12,
+        "strength":9,
+        "agility":14,
+        "intelligence":17,
+        "charisma":11,
+        "weapon_damage":(4, 6)
+    },
 }
 
 
@@ -264,10 +285,10 @@ room_types = {
     "enemy": "Nothic",
     }, #connect öster ambros krypta söder, källare, väster vaktbaracker
 
-    "Vaktbarracker": {
+    "Vaktbaracker": {
     "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
     "items": [],
-    "enemy": ["Troll, Goblin",]
+    "enemy": "Troll"
     }, # connect öster, bergspricka, norr magikerns lya
 
     "Magikerns lya": {
@@ -614,7 +635,7 @@ vapenkammare = Room("Vapenkammare")
 bergsspricka = Room("Bergsspricka")
 vaktbaracker = Room("Vaktbaracker")
 magiker = Room("Magikerns lya")
-ealdrorslya = Room("Ealdrors lya")
+ealdrorsrum = Room("Ealdrors rum")
 
 # Utgångar källare
 kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
@@ -651,10 +672,10 @@ vaktbaracker.connect("norr", magiker, locked=False, hidden=False, dc=0, key=None
 
 # Utgångar magikerns lya
 magiker.connect("söder", vaktbaracker, locked=False, hidden=False, dc=0, key=None)
-magiker.connect("norr", ealdrorslya, locked=False, hidden=False, dc=0, key=None)
+magiker.connect("norr", ealdrorsrum, locked=False, hidden=False, dc=0, key=None)
 
 # Utgångar Ealdrors lya
-ealdrorslya.connect("söder", magiker, locked=False, hidden=False, dc=0, key=None)
+ealdrorsrum.connect("söder", magiker, locked=False, hidden=False, dc=0, key=None)
 
 
 """
@@ -670,7 +691,7 @@ narrate("enter_room", {
 # 8. Skapa spelaren
 # =========================================
 player = Krigare("Bree")
-player.current_room = cell
+player.current_room = kallare
 
 # =========================================
 # 9. Starta spelet
