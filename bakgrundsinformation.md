@@ -76,7 +76,7 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 
 ## RUM_08_VAKTBARACKER
 **Namn:** Vaktbaracker
-**Beskrivning:** Denna kasern innehåller fyra grova trävåningssängar. En lång hårig humanoid (troll) slappar bland röran och skäller order på en liten, sorglig råtta.
+**Beskrivning:** Denna kasern innehåller fyra grova trävåningssängar. En kort olivgrön humanoid (troll) slappar bland röran och skäller order på en liten, sorglig råtta.
 **Dolda Detaljer:** 
 **Fiender:** 1 Troll
 **Stämning:** Frän lukt av otvättade kroppar och ruttnande kött.
@@ -100,7 +100,7 @@ Bland alla papper hittar du en bok om troll och hur man besegrar dem
 **Beskrivning:** Väggarna i detta sovrum är täckta med draperier av scharlakansrött tyg. Möblemanget består av ett litet skrivbord med matchande stol, en bekväm säng och en trälåda vid sängens fotända.
 **Dolda Detaljer:** Inga
 **Fiender:** Ealdror
-**Stämning:** 
+**Stämning:** En tung tystnad råder, luften känns elektrisk och doftar av gammalt papper och makt."
 **Interaktioner** 
 
 #  BESTIARIUM: SLOTTET EALDRORS VARELSER
@@ -108,32 +108,44 @@ Bland alla papper hittar du en bok om troll och hur man besegrar dem
 ---
 ## Troll
 **Utseende:** Små, seniga varelser med olivgrön, oljig hud och stora, spetsiga öron. De bär ofta trasiga kläder hoplappade av läderrester och råttskinn. Deras ögon lyser gult i mörkret.
-
 **Beteende:** De är fega men lömska. En ensam goblin försöker oftast gömma sig eller fly, men i grupp blir de kaxiga. De pratar med gälla, raspiga röster och avbryter ofta sig själva med elaka skratt.
-
 ## Stridstil:
-
 **Taktik:** De slåss smutsigt. De kastar grus i ögonen, bits eller siktar på smalbenen.
-
 **Reaktion på skada:** När de tar skada piper de högt och försöker ofta backa undan. Om de har lite HP kvar (blöder kraftigt), beskriv hur de börjar bönfalla för sina liv eller ser sig om efter en flyktväg.
-
 **Missar:** Om spelaren missar en goblin, beskriv hur goblinen hånflinar och räcker ut tungan.
 
 ---
 ## Gravgast
-Utseende: Utmärglade, bleka humanuider vars hud sitter så stramt över benen att de ser ut som vandrande skelett. De har långa, smutsiga naglar som fungerar som klor och en onaturligt lång tunga som ofta hänger ut ur en mun fylld med vassa tänder.
+**Utseende:** Utmärglade, bleka humanuider vars hud sitter så stramt över benen att de ser ut som vandrande skelett. De har långa, smutsiga naglar som fungerar som klor och en onaturligt lång tunga som ofta hänger ut ur en mun fylld med vassa tänder.
+**Beteende:** De drivs helt av instinkt och en evig hunger efter dött kött. De rör sig ofta på alla fyra i en krabbliknande stil men kan resa sig upp för att attackera. De ger ifrån sig ett djupt, rullande gurglande ljud när de får korn på ett byte.
+## Stridstil:
+**Taktik:** De går direkt på strupen. De försöker kasta sig över spelaren och använda sin tyngd för att trycka ner dem på marken.
+**Reaktion på skada:** De verkar nästan okänsliga för smärta. Beskriv hur de fortsätter anfalla även om de blir spetsade av ett svärd – det enda sättet att stoppa dem är att sänka deras HP till noll.
+**Special:** Om de träffar med sina klor, beskriv hur spelaren känner en isande kyla sprida sig i kroppen (en blinkning till klassisk förlamnings-attack).
+**Doft:** En Gravgast bär med sig en kväljande stank av gammal gravjord och ruttnande kadaver som gör det svårt att andas nära dem.
 
-Beteende: De drivs helt av instinkt och en evig hunger efter dött kött. De rör sig ofta på alla fyra i en krabbliknande stil men kan resa sig upp för att attackera. De ger ifrån sig ett djupt, rullande gurglande ljud när de får korn på ett byte.
+---
 
-Stridstil:
+## NOTHIC (Den sökande)
+**Utseende:** En hukande, spöklik varelse med knotig rygg och långa, kloliknande fingrar. Det mest framträdande är dess enda, enorma, lysande öga som tar upp nästan hela ansiktet. Huden är blekvit eller glåmig och ser ut att sitta löst på kroppen.
+**Beteende:** Nothics är inte nödvändigtvis "onda" i klassisk mening, men de är galna och besatta av hemligheter. De pratar ofta med sig själva eller viskar direkt in i spelarens medvetande. De rör sig ryckigt och håller sig helst i skuggorna där de kan observera utan att synas.
+## Stridstil:
+**Taktik:** Den använder sitt öga för att skada fienden på avstånd. Istället för att bara klösa, beskriv hur den stirrar intensivt på spelaren tills deras kött börjar ruttna av den magiska blicken (Rotting Gaze).
+**Interaktion:** Under striden kan den avslöja att den "ser" saker om spelaren. "Jag ser vad du gömmer i ditt hjärta, lilla vandrare..."
+**Missar:** Om spelaren missar, beskriv hur Nothicen snabbt skuttar upp på en vägg eller bakom en pelare, skrattande med en raspig, torr röst.
+**Ljud:** Ett torrt, klickande ljud (som när man slår ihop stenar) och ett väsande andetag.
 
-Taktik: De går direkt på strupen. De försöker kasta sig över spelaren och använda sin tyngd för att trycka ner dem på marken.
+---
 
-Reaktion på skada: De verkar nästan okänsliga för smärta. Beskriv hur de fortsätter anfalla även om de blir spetsade av ett svärd – det enda sättet att stoppa dem är att sänka deras HP till noll.
+## Ealdror (Svartkonstnär)
+**Utseende:** Klädd i tunga, mörka klädnader som tycks absorbera ljuset omkring dem. Fingrarna är ofta färgade svarta av bläck eller sot från alkemiska experiment. Ögonen lyser med ett onaturligt, feberaktigt sken när de kanaliserar magi.
+**Beteende:** Kall, beräknande och extremt arrogant. Han ser ner på fysisk styrka och betraktar spelaren som ett intressant men underlägset experiment. Han rör sig med värdighet och höjer sällan rösten, vilket gör hans hot ännu mer skrämmande.
+## Stridstil:
+**Taktik:** Han föredrar att hålla avstånd. Istället för att slåss fysiskt, beskriv hur han väver barriärer av rök eller kastar blixtar av lila energi. Om han tvingas i närstrid, använder han en stav eller en förtrollad dolk med ovilja.
+**Dialog:** Han kommenterar spelarens misslyckanden. "Är det där allt 'hjälten' har att komma med?" eller "Du blöder... så förutsägbart."
+**Reaktion på skada:** När han tar skada blir han kränkt snarare än rädd. Han tappar sin kontrollerade mask och hans magi blir mer kaotisk och våldsam ju lägre HP han har.
+**Aura:** Luften omkring honom vibrerar av statisk elektricitet och doftar av ozon och bränt pergament.
 
-Special: Om de träffar med sina klor, beskriv hur spelaren känner en isande kyla sprida sig i kroppen (en blinkning till klassisk förlamnings-attack).
-
-Doft: En ghoul bär med sig en kväljande stank av gammal gravjord och ruttnande kadaver som gör det svårt att andas nära dem.
 
 
 **Utseende:** 
