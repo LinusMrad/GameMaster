@@ -270,7 +270,6 @@ room_types = {
     "description": "Ett lånsmalt rum fyllt med celler längs ena väggen, en mager människa finns i en av cellerna",
     "items":[], # eventuellt health potion eller annat hjälpverktyg
     "enemy":None,
-    #"NPC": "slav(Namn:Dudu svår check att få ur information om vart man kan gå för att besegra bossen.)",
     }, #connect väster ambros krypta
 
     "Vapenkammare": {
