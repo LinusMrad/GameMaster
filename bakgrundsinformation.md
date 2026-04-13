@@ -105,5 +105,40 @@ Bland alla papper hittar du en bok om troll och hur man besegrar dem
 
 #  BESTIARIUM: SLOTTET EALDRORS VARELSER
 
+---
+## Troll
+**Utseende:** Små, seniga varelser med olivgrön, oljig hud och stora, spetsiga öron. De bär ofta trasiga kläder hoplappade av läderrester och råttskinn. Deras ögon lyser gult i mörkret.
+
+**Beteende:** De är fega men lömska. En ensam goblin försöker oftast gömma sig eller fly, men i grupp blir de kaxiga. De pratar med gälla, raspiga röster och avbryter ofta sig själva med elaka skratt.
+
+## Stridstil:
+
+**Taktik:** De slåss smutsigt. De kastar grus i ögonen, bits eller siktar på smalbenen.
+
+**Reaktion på skada:** När de tar skada piper de högt och försöker ofta backa undan. Om de har lite HP kvar (blöder kraftigt), beskriv hur de börjar bönfalla för sina liv eller ser sig om efter en flyktväg.
+
+**Missar:** Om spelaren missar en goblin, beskriv hur goblinen hånflinar och räcker ut tungan.
+
+---
+## Gravgast
+Utseende: Utmärglade, bleka humanuider vars hud sitter så stramt över benen att de ser ut som vandrande skelett. De har långa, smutsiga naglar som fungerar som klor och en onaturligt lång tunga som ofta hänger ut ur en mun fylld med vassa tänder.
+
+Beteende: De drivs helt av instinkt och en evig hunger efter dött kött. De rör sig ofta på alla fyra i en krabbliknande stil men kan resa sig upp för att attackera. De ger ifrån sig ett djupt, rullande gurglande ljud när de får korn på ett byte.
+
+Stridstil:
+
+Taktik: De går direkt på strupen. De försöker kasta sig över spelaren och använda sin tyngd för att trycka ner dem på marken.
+
+Reaktion på skada: De verkar nästan okänsliga för smärta. Beskriv hur de fortsätter anfalla även om de blir spetsade av ett svärd – det enda sättet att stoppa dem är att sänka deras HP till noll.
+
+Special: Om de träffar med sina klor, beskriv hur spelaren känner en isande kyla sprida sig i kroppen (en blinkning till klassisk förlamnings-attack).
+
+Doft: En ghoul bär med sig en kväljande stank av gammal gravjord och ruttnande kadaver som gör det svårt att andas nära dem.
 
 
+**Utseende:** 
+**Beteende:**
+## Stridstil:
+**Taktik:**
+**Reaktion på skada:**
+**Missar:**

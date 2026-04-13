@@ -29,7 +29,7 @@ enemy_types = {
         "charisma": 6,
         "weapon_damage": (1, 4)
     },
-    "Gast": {
+    "Gravgast": {
         "hp": 11,
         "armor": 14,
         "strength": 12,
@@ -263,7 +263,7 @@ room_types = {
     "Ambros Kypta": {
     "description":"En dammig krypta med tre stående kistor.",
     "items": [],# eventuellt nyckel till slavkammare
-    "enemy": "Gast",
+    "enemy": "Gravgast",
     }, # connect söder korridor (olåst) öster slavkammare (olåst) Norr vapenkammare (gömd dörr, svår) 
 
     "Slavkammare": {
