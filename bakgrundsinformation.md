@@ -54,7 +54,7 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 
 ---
 
-## RUM_VAPENKAMMARE
+## RUM_06_VAPENKAMMARE
 **Namn:** Vapenkammare
 **Beskrivning:** Vapenvapenställ kantar väggarna i detta rum, inklusive spjut, svärd, armborst och bultar (pilar). Ett dussin smutsiga röda mantlar hänger på krokar vid dörren. Mitt i rummet finns en stort skinande silversvärd som fångar din blick.
 **Dolda Detaljer:** Inga
@@ -62,21 +62,48 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 **Stämning:** Ett kallt ljus från det silvriga svärdet ger rummet ett kallt ljus men hoppingivande
 **Interaktioner** Du tar silversvärdet och känner hur något vibrerar i dig.
 
+---
+
+## RUM_07_BERGRSSPRICKA
+**Namn:** Bergsspricka
+**Beskrivning:** En kall bris fyller denna stora naturliga grotta och för med sig en svag lukt av ruttnande kött. En klyfta delar grottan och flankeras av två grova stenpelare som bär upp det tjugo fot höga taket. Två välvda träbroar sträcker sig över avgrunden.
+**Dolda Detaljer:** Inga
+**Fiender:** Nothic
+**Stämning:** Storslagen hall, ett kolsvart mörker under fötterna och skräckingjagande känsla
+**Interaktioner** 
+
+---
 
 ## RUM_08_VAKTBARACKER
 **Namn:** Vaktbaracker
-**Beskrivning:** Denna kasern innehåller fyra grova trävåningssängar. Tre långa, håriga humanoider (troll) slappar bland röran och skäller order på en liten, sorglig goblin.
+**Beskrivning:** Denna kasern innehåller fyra grova trävåningssängar. En lång hårig humanoid (troll) slappar bland röran och skäller order på en liten, sorglig råtta.
 **Dolda Detaljer:** 
-**Fiender:** 3 Troll, 1 Goblin (svimmar vid din ankomst).
+**Fiender:** 1 Troll
 **Stämning:** Frän lukt av otvättade kroppar och ruttnande kött.
 **Interaktioner** 
 
 ---
 
-## RUM_
-**Namn:** 
-**Beskrivning:** 
-**Dolda Detaljer:** 
-**Fiender:** 
+## RUM_09_MAGIKERNS_VERKSTAD
+**Namn:** Magikerns verkstad
+**Beskrivning:** Detta rum verkar vara en trollkarls verkstad. En råtta springer över golvet och söker skydd under ett stort arbetsbord utrustat med alembiker, retorter, destillationsspiraler och andra alkemiska apparater, allt puttrande och bubblande. Bokhyllor är fullproppade med buntar av pergament och märkliga böcker.
+**Dolda Detaljer:** Inga
+**Fiender:** Inga
+**Stämning:** Rumemt är fyllt av tjock dimma och rök från alla puttrande och bubblande vätskor
+**Interaktioner** Du kan ta en häslodryck som finns i en stor bokhylla. 
+Bland alla papper hittar du en bok om troll och hur man besegrar dem
+
+---
+
+## RUM_10_EALDRORS_RUM
+**Namn:** Ealdrors rum
+**Beskrivning:** Väggarna i detta sovrum är täckta med draperier av scharlakansrött tyg. Möblemanget består av ett litet skrivbord med matchande stol, en bekväm säng och en trälåda vid sängens fotända.
+**Dolda Detaljer:** Inga
+**Fiender:** Ealdror
 **Stämning:** 
 **Interaktioner** 
+
+#  BESTIARIUM: SLOTTET EALDRORS VARELSER
+
+
+
