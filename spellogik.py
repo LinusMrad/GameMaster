@@ -640,7 +640,7 @@ ealdrorsrum = Room("Ealdrors rum")
 # Utgångar källare
 kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
 kallare.connect("väster", baracker, locked=True, hidden=True, dc=4, key="rostig nyckel")
-kallare.connect("söder", bergsspricka, locked=False, hidden=True, dc=14, key=None)
+kallare.connect("söder", bergsspricka, locked=False, hidden=True, dc=18, key=None)
 
 # utgångar Barack 
 baracker.connect("öster", kallare, locked=False, hidden= False, dc=0, key=None) 
