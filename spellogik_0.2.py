@@ -2,6 +2,9 @@
 # Importer
 # =========================================
 import random
+from berattare import Narrator
+
+dm= Narrator()
 
 # =========================================
 # 1. Spelardata / fiendedata
@@ -437,26 +440,28 @@ def show_room(player):
     Visar information om rummet spelaren befinner sig i.
     """
     room = player.current_room
-    print("\n------------------------")
-    print(f"Du är i: {room.room_type}")
-    print(room.description)
+    # Förbereder data för AIn
+    info = {
+        "typ": "besök i rum",
+        "rum": room.room_types,
+        "fiende": room.enemy.name if room.enemy and room.enemy.is_alive() else "Ingen",
+        "status": f"HP: {player.hp}, Utrustning: {player.equipped_weapon.name if player.equipped_weapon else 'Ingen'}"
+    }
 
+    # Hämta beskrivning från Gemini
+    ai_description = dm.get_description(info)
+
+    print("\n----------------------------------------------------")
+    print(ai_description)
+    print("----------------------------------------------------")
+
+    # Visa detaljer som föremål och utgångar
     visible_items = [item.name for item in room.items if not item.hidden]
     if visible_items:
-        print("Du ser:", ",".join(visible_items))
+        print(f"Synliga föremål: {', '.join(visible_items)}")
 
-    if room.enemy and room.enemy.is_alive():
-        print(f"En fiende finns här: {room.enemy.name}")
-
-    visible_exits = []
-    for direction, exit_data in room.exits.items():
-        if not exit_data["hidden"]:
-            if exit_data["locked"]:
-                visible_exits.append(f"{direction} (låst)")
-            else:
-                visible_exits.append(direction)
-    if visible_exits:
-        print("Utgångar:", ", ".join(visible_exits))
+    visible_exits = [d for d, e in room.exits.items() if not e["hidden"]]
+    print(f"Utgångar: {', '.join(visible_exits)}")
 
 def player_command(player, command):
     room = player.current_room
