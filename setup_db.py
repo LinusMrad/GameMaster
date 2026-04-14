@@ -1,0 +1,6 @@
+# Skapa en vectorstore som databas
+import os
+from langchain_community.document_loader import TextLoader
+from lanchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.vectorstores import Chroma
