@@ -1,18 +1,13 @@
 # Skapa en vectorstore som databas
 import os
+from google import genai
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
 # Hämta API-nyckel
-api_key = os.getenv("chat_key")
-
-# Kontrollera att den hittar api key
-if api_key:
-    os.environ["GOOGLE_API_KEY"] = api_key
-else:
-    print("Kunde inte hitta miljövariabeln")
+os.environ["GOOGLE_API_KEY"] 
 
 def skapa_databas():
     print("Läser in bakgrundsiformation")
@@ -29,7 +24,7 @@ def skapa_databas():
 
     # Skapar embeddings
     print("Skapa embeddings och sparar i Vectorstore")
-    embeddings = GoogleGenerativeAIEmbeddings(model="text-embeddings-004")
+    embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
 
     # Skapa och spara databasen lokalt i i mappen db_ealdror
     vector_db = Chroma.from_documents(
