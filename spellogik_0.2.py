@@ -301,8 +301,7 @@ room_types = {
     },  # connect, söder Vaktbaracker öster, norr ealdrors rum
 
     "Ealdrors rum": { #
-    "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng"
-    " och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
+    "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
     "items":[], # eventuellt en trasure som du vinenr spelet med
     "enemy":"Ealdror",
     }, # connect söder magikerns lya
@@ -371,25 +370,46 @@ def attack(attacker, defender):
     """
     base = roll_d20()
     mod = attacker.get_modifier(attacker.strength)
-    weapon_bonus= 0
+    weapon_bonus = 0
     if isinstance(attacker, Player) and attacker.equipped_weapon:
         weapon_bonus = attacker.equipped_weapon.attack_bonus
+    
     total = base + mod + weapon_bonus
+    damage = 0
+    resultat_text = ""
 
-    print(f"{attacker.name} slår: {base} modifier {mod} vapenbonus {weapon_bonus} = {total}")
-    print(f"{defender.name} har sköld {defender.armor}")
+    # --- Logik för träff/miss ---
     if base == 1:
-        print(f"{attacker.name} fumlar och missar!")
+        resultat_text = "fumlar totalt och missar pinsamt"
     elif base == 20:
         damage = roll_damage(attacker) * 2
-        print(f"Kritisk träff! {attacker.name} gör {damage} skada!")
+        resultat_text = f"gör en legendarisk kritisk träff och utdelar {damage} skada"
         defender.take_damage(damage)
     elif total >= defender.armor:
         damage = roll_damage(attacker)
-        print(f"Träff! {attacker.name} gör {damage} skada.")
+        resultat_text = f"träffar sitt mål och gör {damage} skada"
         defender.take_damage(damage)
     else:
-        print(f"{attacker.name} missar {defender.name}.")
+        resultat_text = "försöker attackera men missar"
+
+    # --- AI-INTEGRATION ---
+    # Vi skickar all information till Berättaren så Gemini kan skriva något snyggt
+    info = {
+        "typ": "stridshändelse",
+        "rum": "en pågående strid",
+        "fiende": defender.name if isinstance(defender, Enemy) else attacker.name,
+        "status": f"{attacker.name} {resultat_text} mot {defender.name}. "
+                  f"Försvararens HP är nu {max(0, defender.hp)}."
+    }
+
+    # Hämta den målande beskrivningen
+    berättelse = dm.get_description(info)
+    
+    # Skriv ut resultatet
+    print(f"\n[Tärning: {total} mot AC {defender.armor}]") # Bra för felsökning/skola
+    print(f"{berättelse}")
+
+
 
 # Check för handlingar i världen, tex smyga förbi fiende
 def skill_check(character, stat_value, dc, action_name="handling"):
@@ -443,7 +463,7 @@ def show_room(player):
     # Förbereder data för AIn
     info = {
         "typ": "besök i rum",
-        "rum": room.room_types,
+        "rum": room.room_type,
         "fiende": room.enemy.name if room.enemy and room.enemy.is_alive() else "Ingen",
         "status": f"HP: {player.hp}, Utrustning: {player.equipped_weapon.name if player.equipped_weapon else 'Ingen'}"
     }

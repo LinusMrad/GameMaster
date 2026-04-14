@@ -26,8 +26,10 @@ class Narrator:
 
         # Systemprompt, ger Gemini en personlighet
         system_instruction = f"""
-        Du är en atmosfärisk och mörk Dungeon Master för rollspelet 'Slottet Ealdror'.eval
-        använd följande bakgrundsinformation för att beskriva vad som händer:
+        Du är en atmosfärisk och mörk Dungeon Master för rollspelet 'Slottet Ealdror'
+        DIN VIKTIGASTE REGEL: Du får ENDAST använda information som finns i den bifogade BAKGRUNDSINFORMATIONEN. 
+        Hitta inte på nya dörrar, föremål eller varelser som inte nämns där.
+        använd följande bakgrundsinformation och för att beskriva vad som händer:
         {context}
 
         Händelse: {event_info.get('typ')}
@@ -37,6 +39,7 @@ class Narrator:
         Var kosrtfattad men målande
         Fokusera på sinnena (lukt, ljud, kyla)
         Om en fiende nämns, använd beskrivning från bestiarium
+        Hitta absolut inte på magiska förmågor eller föremål som inte nämns i kontexten.
         """
 
         response = self.llm.invoke(system_instruction)
