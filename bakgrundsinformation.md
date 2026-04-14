@@ -7,9 +7,9 @@
 - (DC 18): En lös stenplatta bakom en tunna avslöjar en dold passage.
 **Fiender:** Inga, rummet känns ödsligt och tyst.
 **Stämning:** Torr luft, fladdrande ljus från gamla oljelampor, doft av salt och instängt damm.
-**Interaktioner** Du lyfter på ett av faten och finner en rostig nyckel i munnen på en fisk. 
-Du testar nyckeln i trädörren och den passar.
-Du ser en lös stenplatta i väggen bakom en av tunnorna du rycker loss den och en annan sten trillar ner, du fortsätter dra loss stenar tills du är genom väggen. 
+**Interaktioner** Om spelaren undersöker faten kan de finna en rostig nyckel i munnen på en saltad fisk.
+Den rostiga nyckeln passar i trädörren mot väster.
+Om spelaren undersöker väggen bakom tunnorna kan den lösa stenplattan avlägsnas för att avslöja en trång passage.
 
 ---
 
@@ -19,7 +19,7 @@ Du ser en lös stenplatta i väggen bakom en av tunnorna du rycker loss den och 
 **Dolda Detaljer:** Inga
 **Fiender:** Inga för tillfället, men sängarna är varma.
 **Stämning:** Lukt av svett och billigt öl, trångt och stökigt.
-**Interaktioner** Du tar svärdet torkar av blodet och fäster det runt midjan med ditt skärp
+**Interaktioner** Det blodiga svärdet kan plockas upp, rengöras och användas som ett kortsvärd.
 
 ---
 
@@ -29,7 +29,10 @@ Du ser en lös stenplatta i väggen bakom en av tunnorna du rycker loss den och 
 **Dolda Detaljer:** Inga
 **Fiender:** Inga, men du känner dig iaktagen av någon eller något
 **Stämning:** Svagt upplyst några av oljelamporna har brunnit ut. Oroande känsla
-**Interaktioner** Du går långsamt mot dubbeldörrarna
+**Interaktioner** Inga direkta föremål, men ju närmare spelaren kommer dubbeldörrarna, desto starkare blir känslan av att vara iakttagen.
+Om spelaren stannar upp och lyssnar kan de höra vinden vina genom de otäta koppardörrarna, vilket låter som ett dämpat, sorgset kvidande.
+Den sorgsna ängeln på dörren verkar följa spelaren med blicken tack vare en optisk illusion i reliefen.
+Dammråttorna på golvet virvlar upp i märkliga mönster när man går förbi, som om luften rör sig onaturligt.
 
 ---
 
@@ -39,7 +42,7 @@ Du ser en lös stenplatta i väggen bakom en av tunnorna du rycker loss den och 
 **Dolda Detaljer:**(DC= ) En lönndörr finns gömd bakom ett vapensigill för familjen Ambros. 
 **Fiender:** Gast
 **Stämning:** Mörkt, nervkittlande och obehagligt. Doft av gammal tjära fyller rumemt
-**Interaktioner** Kolla bakom vapensigillet och upptäcker ett handtag i en sten. Du drar i handtaget och en dörr öppnar sig.
+**Interaktioner** Bakom familjen Ambros vapensigill finns ett dolt stenhandtag. Om spelaren drar i det öppnas lönndörren med ett tungt skrapande ljud.
 
 ---
 
@@ -50,7 +53,9 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 **Dolda Detaljer:** 
 **Fiender:** Inga
 **Stämning:** Nedstämd och dyster stämning, doften av lik fyller dina näsborrar
-**Interaktioner** 
+**Interaktioner** Spelaren kan hitta ett namn inristat i den smutsiga stenväggen: "Alaric – glöm oss inte".
+Doften av ruttnande halm blandas med en svag, stickande lukt av alkemiska ångor som verkar sippra in under dörren från ett angränsande rum.
+Om spelaren rör vid järngallret känns det onaturligt kallt, som om det suger värmen ur deras fingrar.
 
 ---
 
@@ -60,7 +65,7 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 **Dolda Detaljer:** Inga
 **Fiender:** Inga
 **Stämning:** Ett kallt ljus från det silvriga svärdet ger rummet ett kallt ljus men hoppingivande
-**Interaktioner** Du tar silversvärdet och känner hur något vibrerar i dig.
+**Interaktioner** När spelaren rör vid silversvärdet vibrerar det av magisk energi och sprider ett hoppingivande ljus.
 
 ---
 
@@ -70,7 +75,11 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 **Dolda Detaljer:** Inga
 **Fiender:** Nothic
 **Stämning:** Storslagen hall, ett kolsvart mörker under fötterna och skräckingjagande känsla
-**Interaktioner** 
+**Interaktioner** Mörkret i avgrunden är för djupt för att se botten utan ljuskälla.
+Om spelaren lyssnar noga kan de höra Nothicens raspiga viskningar eka mot stenväggarna.
+Spelaren kan studera de grova stenpelarna; de är täckta av uråldriga runor som har slipats ner av tidens tand och fukt.
+Enstaka droppar av vatten faller från taket ner i avgrunden, och det tar flera sekunder innan ett svagt "plopp" hörs långt där nerifrån.
+Känslan av höjdskräck kan förstärkas genom att beskriva hur broarna svajar lätt i den kalla brisen.
 
 ---
 
@@ -80,7 +89,9 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 **Dolda Detaljer:** 
 **Fiender:** 1 Troll
 **Stämning:** Frän lukt av otvättade kroppar och ruttnande kött.
-**Interaktioner** 
+**Interaktioner** Spelaren kan se rester av en dålig måltid på golvet – gnagda benpipor som ser obehagligt mycket ut som mänskliga fingrar.
+En av de trasiga sängarna har ett intrikat mönster utskuret i träet, en kontrast till den annars smutsiga miljön.
+Råttan som trollet skäller på verkar vara mer intelligent än man först tror och iakttar spelaren med kloka, mörka ögon.
 
 ---
 
@@ -90,8 +101,8 @@ En hög med övergivna kläder ligger slarvigt hopkastad mot den bortre väggen.
 **Dolda Detaljer:** Inga
 **Fiender:** Inga
 **Stämning:** Rumemt är fyllt av tjock dimma och rök från alla puttrande och bubblande vätskor
-**Interaktioner** Du kan ta en häslodryck som finns i en stor bokhylla. 
-Bland alla papper hittar du en bok om troll och hur man besegrar dem
+**Interaktioner** * En hälsodryck (Healing Potion) finns gömd bland flaskorna i bokhyllan.
+Boken "Trollens svagheter" kan läsas för att ge spelaren fördel (Advantage) i strid mot troll.
 
 ---
 
@@ -101,7 +112,8 @@ Bland alla papper hittar du en bok om troll och hur man besegrar dem
 **Dolda Detaljer:** Inga
 **Fiender:** Ealdror
 **Stämning:** En tung tystnad råder, luften känns elektrisk och doftar av gammalt papper och makt."
-**Interaktioner** 
+**Interaktioner** De scharlakansröda draperierna rör sig svagt trots att det inte finns något drag, som om rummet självt andas i takt med Ealdrors magi. Om spelaren rör vid skrivbordet sprider sig en svag doft av bränt svavel och gammalt bläck, och en känsla av brådska infinner sig. Ljuset i rummet verkar dras mot de mörka klädnaderna på väggen, vilket skapar onaturligt långa skuggor som sträcker sig mot dörren.
+En tung tystnad ligger över sängen och möblerna, som om ljudet av omvärlden inte vågar tränga in i detta privata gemak.
 
 #  BESTIARIUM: SLOTTET EALDRORS VARELSER
 

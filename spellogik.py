@@ -293,7 +293,7 @@ room_types = {
     "Magikerns lya": {
     "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
     "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."),
-                Book("bok", "I den här boken får du reda på hur du kan besegra goblins")], # svåre check på bok som hjälper en att klara bossen
+                Book("bok", "Trollens svagheter")], # svåre check på bok som hjälper en att klara bossen
     "enemy": None,
     },  # connect, söder Vaktbaracker öster, norr ealdrors rum
 
