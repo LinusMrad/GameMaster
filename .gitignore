@@ -1,0 +1,17 @@
+# Miljövaraiabler 
+.env
+
+# pythonfiler som skapas automatiskt
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Lokala databaser 
+db_ealdror/
+
+# Operativsystem-specifika filer
+.DS_Store
+thumbs.db
+
+# Loggfiler
+*.log
