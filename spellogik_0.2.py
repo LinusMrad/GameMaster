@@ -196,7 +196,7 @@ class Key(Item):
         for direction, exit_data in room.exits.items():
             if exit_data["locked"] and exit_data["key"] == self.name:
                 exit_data["locked"] = False
-                print(f"Du låser upp dörren mot {direction} med {self.name}.")
+                print(f"...")
                 return
         print(f"{self.name} passar inte här.")
 
@@ -336,13 +336,6 @@ class Room:
 # 6. Hjälpfunktioner / spellogik
 # =========================================
 
-def narrate(event_type, data):
-    """
-    Funktion för användandet av AI-chatbot för berättelsen.
-    """
-    print(f"[AI BESKRIVNING HÄR] {event_type} - {data}")
-
-
 def roll_d20():
     """
     Återger en slumpmässig siffra mellan 1 - 20
@@ -406,7 +399,7 @@ def attack(attacker, defender):
     berättelse = dm.get_description(info)
     
     # Skriv ut resultatet
-    print(f"\n[Tärning: {total} mot AC {defender.armor}]") # Bra för felsökning/skola
+    print(f"\n[Tärning: {total} mot AC {defender.armor}]") 
     print(f"{berättelse}")
 
 
@@ -519,6 +512,7 @@ def player_command(player, command):
     
     # ta item
     elif command.startswith("ta "):
+        print("...")
         item_name = command[3:]
         found_item = None
     
@@ -530,7 +524,7 @@ def player_command(player, command):
         if found_item:
             player.inventory.append(found_item)
             room.items.remove(found_item)
-            print(f"Du tog {found_item.name}")
+            #print(f"Du tog {found_item.name}")
 
             # AI beskrivning
             info = {
@@ -541,6 +535,7 @@ def player_command(player, command):
             }
             ai_text = dm.get_description(info)
             print(f"\n{ai_text}")
+            print(f"Du tog: {found_item.name}")
         else:
             print("Det föremålet finns inte här")
 
@@ -617,8 +612,7 @@ def player_command(player, command):
 
     # Söka i rummet
     elif command == "sök":
-        print(f"Du söker genom rummet...")
-
+        print("Du granskar omgivningen noggrant...")
         found_items = []
         found_exits = []
 
@@ -653,7 +647,6 @@ def player_command(player, command):
         # AI beskrivning
         ai_berättelse = dm.get_description(info)
 
-        print("Du granskar omgivningen noggrant...")
         print(f"{ai_berättelse}")
 
         # visa även redan synliga föremål
@@ -742,15 +735,6 @@ magiker.connect("norr", ealdrorsrum, locked=False, hidden=False, dc=0, key=None)
 # Utgångar Ealdrors lya
 ealdrorsrum.connect("söder", magiker, locked=False, hidden=False, dc=0, key=None)
 
-
-"""
-narrate("enter_room", {
-    "room": room.room_type,
-    "description": room.description,
-    "enemy": room.enemy.name if room.enemy and room.enemy.is_alive() else None,
-    "items": [item.name for item in room.items if not item.hidden]
-})
-"""
 
 # =========================================
 # 8. Skapa spelaren

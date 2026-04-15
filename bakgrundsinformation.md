@@ -40,7 +40,7 @@ Dammråttorna på golvet virvlar upp i märkliga mönster när man går förbi, 
 **Namn:** Ambros krypta
 **Beskrivning:** Tre stora stensarkofager står i denna dammiga krypta, och lutade mot varje sarkofag finns ett mänskligt skelett klätt i bitar av rostig ringbrynja. Falska pelare längs väggarna är snidade som utspridda ekar. Dubbeldörrarna i det sydöstra hörnet är klädda i anlupen kopparplåt.
 **Dolda Detaljer:**(DC= ) En lönndörr finns gömd bakom ett vapensigill för familjen Ambros. 
-**Fiender:** Gast
+**Fiender:** Gravgast
 **Stämning:** Mörkt, nervkittlande och obehagligt. Doft av gammal tjära fyller rumemt
 **Interaktioner** Bakom familjen Ambros vapensigill finns ett dolt stenhandtag. Om spelaren drar i det öppnas lönndörren med ett tungt skrapande ljud.
 
