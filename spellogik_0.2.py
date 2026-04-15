@@ -79,7 +79,7 @@ class Character:
 
     def take_damage(self, amount):
         self.hp -= amount
-        print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
+        #print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
         
     def is_alive(self):
         return self.hp > 0
@@ -249,25 +249,25 @@ room_types = {
         "description": "En kall och fuktig källare",
         "items": [Key("rostig nyckel", "En gammal nyckel täckt av rost.", hidden=True, dc=2)],
         "enemy" : None
-    }, #Connect: Norr Korridor(öppen), Väster barack(låst nyckel i rum, lätt check) söder bergsspricka(hemlig dörr hög sök)
+    }, 
 
     "Baracker": {
         "description":"Barracker med sängar, mat och logi för troll",
         "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", damage_bonus=1, attack_bonus=2, hidden=False)],
         "enemy": "Troll"
-    },# Connect:  öster källare
+    },
 
     "Korridor":{
         "description": "En mörk korridor med fladdrande facklor",
         "items": [],
         "enemy": None
-    }, #Connect söder källare(öppen), väster kryptan(öppen)
+    }, 
 
     "Ambros Kypta": {
     "description":"En dammig krypta med tre stående kistor.",
     "items": [],# eventuellt nyckel till slavkammare
     "enemy": "Gravgast",
-    }, # connect söder korridor (olåst) öster slavkammare (olåst) Norr vapenkammare (gömd dörr, svår) 
+    }, 
 
     "Slavkammare": {
     "description": "Ett lånsmalt rum fyllt med celler längs ena väggen, en mager människa finns i en av cellerna",
@@ -279,32 +279,32 @@ room_types = {
     "description": "Vapenkammare fylld med rader av svärd av olika slag",
     "items": [Weapon("Svärd", "Ett gammalt rostigt svärd", damage_bonus=1, attack_bonus=2, hidden=False)],
     "enemy": None,
-    }, # connect söder, ambros kypta connect väster Bergsspricka (gömd medelcheck)
+    }, 
 
     "Bergsspricka": {
     "description":"En spricka som uppstått i bergrgunden där slottet står. en stank av ruttet kött fyller luften",
     "items": [],
     "enemy": "Nothic",
-    }, #connect öster ambros krypta söder, källare, väster vaktbaracker
+    }, 
 
     "Vaktbaracker": {
     "description":"En barack med fyra träsängar och smutsig disk utrsött överallt",
     "items": [],
     "enemy": "Troll"
-    }, # connect öster, bergspricka, norr magikerns lya
+    }, 
 
     "Magikerns lya": {
     "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
     "items": [Potion("Hälsodryck", 5, "En liten flaska med röd vätska."),
                 Book("bok", "Trollens svagheter")], # svåre check på bok som hjälper en att klara bossen
     "enemy": None,
-    },  # connect, söder Vaktbaracker öster, norr ealdrors rum
+    },  #
 
     "Ealdrors rum": { #
     "description": "Väggarna i detta rum är draperade i röd siden, längst in i rummet står en säng och i mitten finns ett litet upplyst skrivbord. Hukad över skrivbordet sittter en mörk figur",
     "items":[], # eventuellt en trasure som du vinenr spelet med
     "enemy":"Ealdror",
-    }, # connect söder magikerns lya
+    }, 
 
 }
 
@@ -385,22 +385,34 @@ def attack(attacker, defender):
     else:
         resultat_text = "försöker attackera men missar"
 
-    # --- AI-INTEGRATION ---
-    # Vi skickar all information till Berättaren så Gemini kan skriva något snyggt
+    # Information om HP(karaktärens hälsa)
+
+    if not defender.is_alive():
+        hälso_info = "DÖDLIG: Fienden faller till marken, besegrad och livlös."
+    elif defender.hp < 5:
+        hälso_info = "KRITISK: Fienden blöder kraftigt, vacklar och ser ut att vara nära döden."
+    elif damage > 0:
+        hälso_info = f"SÅRAD: Fienden tar skadan men står fortfarande upp. HP kvar: {defender.hp}."
+    else:
+        hälso_info = f"OSKADD: Fienden är fortfarande vid god vigör. HP: {defender.hp}."
+
+    # --- AI beskrivning
     info = {
         "typ": "stridshändelse",
         "rum": "en pågående strid",
         "fiende": defender.name if isinstance(defender, Enemy) else attacker.name,
-        "status": f"{attacker.name} {resultat_text} mot {defender.name}. "
+        "status": f"{attacker.name} {resultat_text} mot {defender.name}.{hälso_info} "
                   f"Försvararens HP är nu {max(0, defender.hp)}."
     }
 
     # Hämta den målande beskrivningen
-    berättelse = dm.get_description(info)
-    
+    ai_text= dm.get_description(info)
+    print("\n----------------------------------------------------")
     # Skriv ut resultatet
-    print(f"\n[Tärning: {total} mot AC {defender.armor}]") 
-    print(f"{berättelse}")
+    print(f"{ai_text}")
+    if defender.is_alive():
+        print(f"\n[Tärning: {total} mot AC {defender.armor}][{defender.name} har {defender.hp} HP kvar]") 
+
 
 
 
@@ -536,8 +548,10 @@ def player_command(player, command):
             ai_text = dm.get_description(info)
             print(f"\n{ai_text}")
             print(f"Du tog: {found_item.name}")
+            print("\n----------------------------------------------------")
         else:
             print("Det föremålet finns inte här")
+            print("\n----------------------------------------------------")
 
     # använda item    
     elif command.startswith("använd "):
@@ -559,6 +573,7 @@ def player_command(player, command):
             }
             ai_text = dm.get_description(info)
             print(f"\n{ai_text}")
+            print("\n----------------------------------------------------")
         else:
             print("Du har inte det föremålet")
 
@@ -648,6 +663,7 @@ def player_command(player, command):
         ai_berättelse = dm.get_description(info)
 
         print(f"{ai_berättelse}")
+        print("\n----------------------------------------------------")
 
         # visa även redan synliga föremål
         visible_items = [item.name for item in room.items if not item.hidden]
