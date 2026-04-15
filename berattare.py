@@ -40,6 +40,7 @@ class Narrator:
         Fokusera på sinnena (lukt, ljud, kyla)
         Om en fiende nämns, använd beskrivning från bestiarium
         Hitta absolut inte på magiska förmågor eller föremål som inte nämns i kontexten.
+        "Beskriv ENBART handlingen att ta föremålet och miljön precis runt det. Hitta inte på händelser i andra rum."
         """
 
         response = self.llm.invoke(system_instruction)
