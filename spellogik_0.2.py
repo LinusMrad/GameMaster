@@ -615,6 +615,7 @@ def player_command(player, command):
         else:
             print("Det finns ingen fiende att smyga förbi")
 
+    # Söka i rummet
     elif command == "sök":
         print(f"{player.name} söker genom rummet...")
 
@@ -635,6 +636,26 @@ def player_command(player, command):
                     exit_data["hidden"] = False
                     found_exits.append(direction)
 
+        # AI beskrvining förberedelser
+        result = "Spelaren letar noga"
+        if found_items or found_exits:
+            resultat += f" Framgång! Spelaren hittade följande: {', '.join(found_items + found_exits)}."
+            resultat += " Beskriv hur de hittar dessa specifika detaljer baserat på bakgrundsinformationen."
+        else:
+            resultat += " Misslyckande. Spelaren hittar absolut ingenting nytt, trots ansträngningen."
+
+        info = {
+            "typ": "söker genom rummet",
+            "rum": room.room_type,
+            "status": resultat
+        }
+
+        # AI beskrivning
+        ai_berättelse = dm.get_description(info)
+
+        print(f"\n{player.name} granskar omgivningen noggrant...")
+        print(f"{ai_berättelse}")
+        
         # visa även redan synliga föremål
         visible_items = [item.name for item in room.items if not item.hidden]
 
