@@ -1,2 +1,2 @@
 # GameMaster
-En spelmästar-chatbot inspirerad av DnD
+Det här är ett logik ocj textbaserat RPG-spel med en RAG-driven AI som berättare.
