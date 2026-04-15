@@ -716,9 +716,47 @@ def player_command(player, command):
         print("Ogiltigt kommando")
     return True
 
+def evaluate_bot(narrator):
+    """
+    System för att utvärdera AI.modellens svar och kontext
+    """
+    test_cases = [
+    {
+        "query": "Vad finns i tunnorna i källaren",
+        "expected_keyword": "saltat fläsk",
+        "context": "Källare"
+    },
+    {
+        "query": "Hur ser trollen ut i vaktbarackerna?",
+        "expected_keyword": "håriga",
+        "context": "Vaktbaracker"
+    }
+    ]
+
+    print("\n"+ "="*50)
+    print("--- Systemevaluering: RAG-kontroll ---")
+    for test in test_cases:
+        # Simulerar ett anrop till AI-berättaren
+        info = {"rum": test["context"], "typ": test["query"], "status": "Testkörning"}
+        response = narrator.get_description(info)
+        
+        # Kontrollerar om nyckelordet finns i filen bakgrundsinformation
+        success = test["expected_keyword"].lower() in response.lower()
+        status = "Godkänd" if success else "Misslyckad"
+
+        print(f"\nTestfråga: {test["query"]}")
+        print(f"Status: {status}")
+        print(f"AI-berättarens svar: {response[:120]}...")
+    print("="*50 + "\n")
+
 def player_loop(player):
     """Spelets huvudloop"""
     # Rensa skärmen
+    os.system("cls" if os.name == "nt" else "clear")
+
+    # Evaluering av AI innan spelet startar
+    evaluate_bot(dm)
+    input("Tryck ENTER för att fortsätta efter evaluering...")
     os.system("cls" if os.name == "nt" else "clear")
 
     # Visa startskärm
