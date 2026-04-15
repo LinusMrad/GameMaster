@@ -407,7 +407,7 @@ def attack(attacker, defender):
 
     # Hämta den målande beskrivningen
     ai_text= dm.get_description(info)
-    print("\n----------------------------------------------------")
+    print("----------------------------------------------------")
     # Skriv ut resultatet
     print(f"{ai_text}")
     if defender.is_alive():
@@ -548,10 +548,10 @@ def player_command(player, command):
             ai_text = dm.get_description(info)
             print(f"\n{ai_text}")
             print(f"Du tog: {found_item.name}")
-            print("\n----------------------------------------------------")
+            print("----------------------------------------------------")
         else:
             print("Det föremålet finns inte här")
-            print("\n----------------------------------------------------")
+            print("----------------------------------------------------")
 
     # använda item    
     elif command.startswith("använd "):
@@ -573,7 +573,7 @@ def player_command(player, command):
             }
             ai_text = dm.get_description(info)
             print(f"\n{ai_text}")
-            print("\n----------------------------------------------------")
+            print("----------------------------------------------------")
         else:
             print("Du har inte det föremålet")
 
@@ -663,7 +663,7 @@ def player_command(player, command):
         ai_berättelse = dm.get_description(info)
 
         print(f"{ai_berättelse}")
-        print("\n----------------------------------------------------")
+        print("----------------------------------------------------")
 
         # visa även redan synliga föremål
         visible_items = [item.name for item in room.items if not item.hidden]
