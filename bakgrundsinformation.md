@@ -120,11 +120,11 @@ En tung tystnad ligger över sängen och möblerna, som om ljudet av omvärlden 
 ---
 ## Troll
 **Utseende:** Små, seniga varelser med olivgrön, oljig hud och stora, spetsiga öron. De bär ofta trasiga kläder hoplappade av läderrester och råttskinn. Deras ögon lyser gult i mörkret.
-**Beteende:** De är fega men lömska. En ensam goblin försöker oftast gömma sig eller fly, men i grupp blir de kaxiga. De pratar med gälla, raspiga röster och avbryter ofta sig själva med elaka skratt.
+**Beteende:** De är fega men lömska. En ensam Troll försöker oftast gömma sig eller fly, men i grupp blir de kaxiga. De pratar med gälla, raspiga röster och avbryter ofta sig själva med elaka skratt.
 ## Stridstil:
 **Taktik:** De slåss smutsigt. De kastar grus i ögonen, bits eller siktar på smalbenen.
 **Reaktion på skada:** När de tar skada piper de högt och försöker ofta backa undan. Om de har lite HP kvar (blöder kraftigt), beskriv hur de börjar bönfalla för sina liv eller ser sig om efter en flyktväg.
-**Missar:** Om spelaren missar en goblin, beskriv hur goblinen hånflinar och räcker ut tungan.
+**Missar:** Om spelaren missar ett Troll, beskriv hur Trollet hånflinar och räcker ut tungan.
 
 ---
 ## Gravgast

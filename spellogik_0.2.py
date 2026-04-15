@@ -728,7 +728,7 @@ def evaluate_bot(narrator):
     },
     {
         "query": "Hur ser trollen ut i vaktbarackerna?",
-        "expected_keyword": "håriga",
+        "expected_keyword": "olivgröna",
         "context": "Vaktbaracker"
     }
     ]
