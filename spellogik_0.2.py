@@ -1,10 +1,42 @@
 # =========================================
 # Importer
 # =========================================
+import os
+import time
+import sys
 import random
 from berattare import Narrator
 
 dm= Narrator()
+
+# =========================================
+# Startskärm
+# =========================================
+
+#Spelets titelskärm
+start_screen = r"""
+   ^                 ^
+  / \               / \
+ /   \             /   \
+(_____)           (_____)
+ |   |  _   _   _  |   |
+ | O |_| |_| |_| |_| O |
+ |-  |          _  | - |
+ |   |   - _^_     |   |
+ |  _|    //|\\  - |   |
+ |   |   ///|\\\   |  -|
+ |-  |_  |||||||   |   |
+ |   |   |||||||   |-  |
+ |___|___|||||||___|___|
+         (      (
+          \      \
+           )      )
+           |      |
+           (      (
+            \      \
+S L O T T E T   E A L D R O R
+============================
+"""
 
 # =========================================
 # 1. Spelardata / fiendedata
@@ -686,6 +718,28 @@ def player_command(player, command):
 
 def player_loop(player):
     """Spelets huvudloop"""
+    # Rensa skärmen
+    os.system("cls" if os.name == "nt" else "clear")
+
+    # Visa startskärm
+    print(start_screen)
+
+    print("\n --- Tryck på ENTER för att påbörja din resa ---")
+    input("")
+
+    # Simulera laddnign av spel
+    print("\n[system: initierar AI-berättare och laddare bakgrundshistoria...]")
+    print("Vänta", end="", flush=True)
+
+    for _ in range(3):
+        time.sleep(1) # väntar en selkund
+        print(".", end="", flush=True)
+
+    print("Klart!")
+
+    # rensa skärmen och starta spelet
+    os.system("cls" if os.name == "nt" else "clear")
+
     print(f"Välkommen {player.name}!")
     print("Skriv 'hjälp' för att se kommandon")
     show_room(player)
