@@ -159,6 +159,10 @@ En tung tystnad ligger över sängen och möblerna, som om ljudet av omvärlden 
 **Aura:** Luften omkring honom vibrerar av statisk elektricitet och doftar av ozon och bränt pergament.
 
 
+# FÖREMÅL (ITEMS)
+**Rostig nyckel** En tung järnnyckel av rödbrun rost. Den känns sträv mot huden och doftar av gammal metall och salt
+**Silversvärd:** Ett vackert smitt svärd som glimmar onaturligt rent. När man håller i det känns en svag, varm vibration som sprider ett lugn i kroppen.
+**Hälsodryck:** En liten glasflaska fylld med en trögflytande, röd vätska som bubblar svagt. Den doftar av örter och skogsmark.
 
 **Utseende:** 
 **Beteende:**

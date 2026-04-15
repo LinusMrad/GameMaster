@@ -271,9 +271,9 @@ room_types = {
 
     "Slavkammare": {
     "description": "Ett lånsmalt rum fyllt med celler längs ena väggen, en mager människa finns i en av cellerna",
-    "items":[], # eventuellt health potion eller annat hjälpverktyg
+    "items":[], 
     "enemy":None,
-    }, #connect väster ambros krypta
+    }, 
 
     "Vapenkammare": {
     "description": "Vapenkammare fylld med rader av svärd av olika slag",
@@ -295,7 +295,7 @@ room_types = {
 
     "Magikerns lya": {
     "description": "Det här rumemt ser ut att vara en lya för en magisker, det är fyllt av gamla böcker och magiska drycker",
-    "items": [Potion("healing potion", 5, "En liten flaska med röd vätska."),
+    "items": [Potion("Hälsodryck", 5, "En liten flaska med röd vätska."),
                 Book("bok", "Trollens svagheter")], # svåre check på bok som hjälper en att klara bossen
     "enemy": None,
     },  # connect, söder Vaktbaracker öster, norr ealdrors rum
@@ -531,8 +531,19 @@ def player_command(player, command):
             player.inventory.append(found_item)
             room.items.remove(found_item)
             print(f"Du tog {found_item.name}")
+
+            # AI beskrivning
+            info = {
+                "typ": "plockar upp föremål",
+                "rum": room.room_type,
+                "item": found_item.name,
+                "status": f"Spelaren plockar upp {found_item.name}. {found_item.description}"
+            }
+            ai_text = dm.get_description(info)
+            print(f"\n{ai_text}")
         else:
-            print("Det itemet finns inte här")
+            print("Det föremålet finns inte här")
+
     # använda item    
     elif command.startswith("använd "):
         item_name = command[7:]
@@ -544,6 +555,15 @@ def player_command(player, command):
                 break
         if found_item:
             found_item.use(player)
+            # AI beskrivning
+            info = {
+                "typ": "använder föremål",
+                "rum": room.room_type,
+                "item": found_item.name,
+                "status": f"Spelaren använder {found_item.name}. Beskriv resultatet dramatiskt."
+            }
+            ai_text = dm.get_description(info)
+            print(f"\n{ai_text}")
         else:
             print("Du har inte det föremålet")
 
