@@ -18,8 +18,10 @@ class Narrator:
     
     def get_description(self, event_info):
         # Skapar en sökväg till vectorstore baserat på rumemt eller fienden
+        search_query = f"{event_info.get('rum')} {event_info.get('fiende', '')}"
         
-        search_query = f"Beskrivning av rummet {event_info.get('rum')}. Detaljer om varelser, fiender och monster som heter {event_info.get('fiende', 'inga')}, deras utseende och beteende."
+        # Test med en annan Query. 
+        #search_query = f"Beskrivning av rummet {event_info.get('rum')}. Detaljer om varelser, fiender och monster som heter {event_info.get('fiende', 'inga')}, deras utseende och beteende."
 
         # Hämta de två mest relevanta textbitarna från vectorstore 
         relevant_chunks = self.vector_db.similarity_search(search_query, k=4)
