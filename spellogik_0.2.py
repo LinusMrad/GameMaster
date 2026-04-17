@@ -858,9 +858,48 @@ player_loop(player)
 """
 Jag har skapat ett logik och textbaserat simpelt RPG-spel med inspiration från Dungeons and dragons.
 Jag började med att skapa min huvudfil (spellogik.py) i vilken jag skapade min så kallade spelmotor, det är här jag bestämmer
-och reglerar hur spelet ska bete sig. Alltå all udnerliggande logik blir då hårdkodad, exempelvis hur mcyket liv en karaktär har,
+och reglerar hur spelet ska bete sig. Alltå all udnerliggande logik blir då hårdkodad, exempelvis hur mycket liv en karaktär har,
 hur mycket skada en karaktär tar osv. På den här logiken har jag sedan lagt på en chatbot med RAG som blir berättaren i spelet.
 Det boten gör är att beskriva händelser och platser i spelet. Exempelvis istället för att skriva "Du står i en kall och mörk källare" 
 Skriver boten något mer målande som tex "Du står i en källare, mörkret omsluter dig samtidigt som en stank av mögel fyller dina sinnen".
-För att boten itne ska hitta på allt själv har jag gett den en fil där den hittar informationen för  I filen spellogik.py finns den initiala koden där man kan spela spelet som det är men utan nå
+För att boten itne ska hitta på allt själv har jag gett den en fil där den hittar all information den ska berätta. 
+I filen spellogik.py finns den initiala koden där man kan spela spelet som det är men utan någon berättare, i filen spellogisk_0.2.py
+finns spellogiken blandad med AI-berättaren. 
+
+För att få AI-berättaren att hämta rätt information skapade jag en markdownfil som innehåller all bakgrundhistora för mitt spel. 
+här samlar jag information om hur dem olika rummen ser ut, hur karaktärer beter sig, hur föremål ser ut och känns. 
+I från denna fil skapade jag mina embeddings vilket innebär att jag omvandlöar texten till vektorer som får rtepresentera ordens betydlese
+i siffror. På det här sättet mljliggöra jag för semantisk sökning i min text.
+Det som gör semantisk sökning så bra är att den möjliggör för att söka ord efter förståelse och inte bara letar efter exakta ordmatcningar.
+Tex kan jag söka efter "mörker" och då kan systemet hitta beskrivnignar som nämner "skuggor" eller "lågt ljus" eftersom dessa
+ord ligger nära avrandra i betydlese i min vectorstore. Det här gör att även om spelets logik eller handlignar som spelaren gör inte
+exakt macthar något i bakgrundsfilen så kan den ändå hitta relevant information att hämta. 
+
+Jag testade flera olika sätt att dela upp mina chunks. 
+
+I filen berattare.py har jag själva AI-boten, jag har använt mig av Gemini och jag valde att köra via molnet. Det finns en risk att
+det blir för många anrop och boten lägger ner då jag kör på en gratisversion samt att det slutar fungera om internet ligger nere. 
+Jag har itne hårdvaran för att kunna köra den lokalt för tillfället. 
+
+Jag skapade funktionen evaluate_bot för att utvärdera min modell. Den här testar AI-berättarens förmåga att hämta 
+korrekt information från min vectorstore. Jag använde mig av nyckelordsutvärdering. Det innebär att jag ställer en fråga
+till AI-berättaren och den ger mig ett svar som ska innehålla det här nyckelordet. På det här sättet kan jag 
+säkertsälla att min AI hämtar korrekt information i den givna kontexten samt minimerar risken för så kallad hallucination. 
+
+Under utvecklingsfasen upptäckte jag initialt att mitt utvärderingssystem ofta gav utslaget underkänt vid testfrågorna trots att AIn
+gav korrekta meningar. DEt här berodde på att test-skriptets förväntade nyckelord inte matchade med min bakgrundsfil. 
+Det här belyser ett problem med RAG-modeller, att alltid se till att ha uppdaterade och korrekta källfiler samt testskript för att
+kunna lita på utvärderingen. 
+
+Det hände även att utvärderignen gav godkänt trots att nyckelordet saknades i förhandsvisnningen av svaret.
+Det beror på att förhandsvisningen var för kort för att visa nyckelordet. Min modell prioriterade helt enkelt att skriva större 
+och mer målande beskrivningar än att bara fokusera på själva nyckelordet. Med detta som bakgrund hade det kanske varit bättre
+att använda en annan typ av utvärderingsmetod än just nyckelordsutvärdering. Man kan tex anvädna sig av modellbaserad utvärderingar
+något som troligen hade varit ett bättre val för en faktiskt produktionmiljö.
+
+
+
+
+
+
 """
