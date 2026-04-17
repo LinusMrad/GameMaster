@@ -347,9 +347,9 @@ room_types = {
 class Room:
     def __init__(self, room_type):
         self.room_type = room_type
-        data = room_types[room_type]
-        
+        data = room_types[room_type]        
         self.description = data["description"]
+        self.generated_description = None
         self.items = data["items"].copy()
         self.enemy = Enemy(data["enemy"]) if data["enemy"] else None
         self.exits = {}
@@ -497,16 +497,24 @@ def show_room(player):
     Visar information om rummet spelaren befinner sig i.
     """
     room = player.current_room
-    # Förbereder data för AIn
-    info = {
-        "typ": "besök i rum",
-        "rum": room.room_type,
-        "fiende": room.enemy.name if room.enemy and room.enemy.is_alive() else "Ingen",
-        "status": f"HP: {player.hp}, Utrustning: {player.equipped_weapon.name if player.equipped_weapon else 'Ingen'}"
-    }
+    
+    #Kollar om rumemt redan har en beskrivning i chache
+    if hasattr(room, "generated_description") and room.generated_description:
+        ai_description = room.generated_despcription
+    else:
+    # om ingen beskrivning finns generera en ny
+        info = {
+            "typ": "besök i rum",
+            "rum": room.room_type,
+            "fiende": room.enemy.name if room.enemy and room.enemy.is_alive() else "Ingen",
+            "status": f"HP: {player.hp}, Utrustning: {player.equipped_weapon.name if player.equipped_weapon else 'Ingen'}"
+        }
 
-    # Hämta beskrivning från Gemini
-    ai_description = dm.get_description(info)
+        # Hämta beskrivning från Gemini
+        ai_description = dm.get_description(info)
+
+        #Spara den genererade beskrivnignen
+        room.generated_description = ai_description
 
     print("\n----------------------------------------------------")
     print(ai_description)

@@ -42,7 +42,7 @@ class Narrator:
         Spelarens status: {event_info.get('status')}
 
         ### INSTRUKTIONER FÖR SVAR:
-        - Var kortfattad (max 3–4 meningar) men mycket målande.
+        - Var kortfattad (max 4-5 meningar) men mycket målande.
         - Använd detaljer från Bestiariet om en fiende interagerar.
         - Om spelaren tar ett föremål: Beskriv dess fysiska känsla (tyngd, textur, doft) baserat på informationen i Lore.
         - Om spelaren strider: Beskriv våldet och dramatiken, men håll dig till de skadevärden som anges i statusen.
