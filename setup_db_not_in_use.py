@@ -2,7 +2,7 @@
 import os
 from google import genai
 from langchain_community.document_loaders import TextLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
@@ -14,20 +14,13 @@ def skapa_databas():
     loader = TextLoader("bakgrundsinformation.md", encoding="utf-8")
     documents = loader.load()
 
-    # hämtar innehållet från dokumentet
-    full_text = documents[0].page_content
-
-    # Delar upp texten för varje ##(rumsrubrik) mappar ## till "Rum"
-    headers_to_split_on = [
-        ("##", "Rum")
-    ]
-
-    # Skapar splitten
-    markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=headers_to_split_on)
-
-    # Delar upp rummen i chunks
-    chunks = markdown_splitter.split_text(full_text)
-    print(f"skapade {len(chunks)} logiska chunks")
+    # Jag delar upp texten i 600 tecken med lite överlapp
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=600,
+        chunk_overlap=100,
+        separators=["\n##", "\n###", "\n\n", "\n", " "]
+    )
+    chunks = text_splitter.split_documents(documents)
 
     # Skapar embeddings
     print("Skapa embeddings och sparar i Vectorstore")

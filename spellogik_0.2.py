@@ -818,7 +818,7 @@ korridor.connect("väster", krypta , locked=False, hidden=False, dc=0, key=None)
 # Utgångar Ambros krypta 
 krypta.connect("söder", korridor, locked=False, hidden=False, dc=0, key=None)
 krypta.connect("öster", slavkammare, locked=False, hidden=False, dc=0, key=None)
-krypta.connect("söder", vapenkammare, locked=False, hidden=True, dc=16, key=None)
+krypta.connect("norr", vapenkammare, locked=False, hidden=True, dc=16, key=None)
 
 # Utgångar slavkammare 
 slavkammare.connect("väster", krypta, locked=False, hidden=False, dc=0, key=None)
@@ -856,10 +856,14 @@ player.current_room = kallare
 player_loop(player)
 
 """
-Jag har skapat ett logik och textbaserat simpelt RPG-spel med inspiration från Dungeons and dragons.
+====================================================================================================================================================================
+Jag har skapat ett logik och textbaserat simpelt RPG-spel med inspiration från Dungeons and dragons. Jag har från börjat delat upp
+propjektet i flera filer, det här har jag gjort då jag hanterar detta projekt som ett "proof of koncept" som jag vill
+ta vidare och fortsätta utveckla.
+
 Jag började med att skapa min huvudfil (spellogik.py) i vilken jag skapade min så kallade spelmotor, det är här jag bestämmer
 och reglerar hur spelet ska bete sig. Alltå all udnerliggande logik blir då hårdkodad, exempelvis hur mycket liv en karaktär har,
-hur mycket skada en karaktär tar osv. På den här logiken har jag sedan lagt på en chatbot med RAG som blir berättaren i spelet.
+hur mycket skada en karaktär tar osv. Det är här i jag lagt min aklasser för spelare, fiender, rum osv. På den här logiken har jag sedan lagt på en chatbot med RAG som blir berättaren i spelet.
 Det boten gör är att beskriva händelser och platser i spelet. Exempelvis istället för att skriva "Du står i en kall och mörk källare" 
 Skriver boten något mer målande som tex "Du står i en källare, mörkret omsluter dig samtidigt som en stank av mögel fyller dina sinnen".
 För att boten itne ska hitta på allt själv har jag gett den en fil där den hittar all information den ska berätta. 
@@ -897,6 +901,50 @@ och mer målande beskrivningar än att bara fokusera på själva nyckelordet. Me
 att använda en annan typ av utvärderingsmetod än just nyckelordsutvärdering. Man kan tex anvädna sig av modellbaserad utvärderingar
 något som troligen hade varit ett bättre val för en faktiskt produktionmiljö.
 
+Sammanfattningsvis visar detta projekt hur RAG-teknik kan användas för att lyfta ett traditionellt spelmotornarrativ 
+och göra det mer dynamiskt. Genom att jag har separerat den hårdkodade spellogiken från den kreativa beskrivningen skapar jag ett 
+system som både är stabilt och samtidigt erbjduer vidare atmosfär spelupplevelsen. Det här gör det också lätt att ändra 
+kontexten för spelets utspelingsplats och fiendernas beteende. Genom att enkelt skapa ny information i bakgrundfilen som 
+består av simpel text kan vem som helst skapa sitt egna äventyr.
+
+Det är just den oändliga variationen av spelvärldens och dess upplevelse som ger det här konceptet sin starkaste affärsmässiga möjlighet.
+Istället för att man ska skriva tusentals rader kod för dialoger, rumsbeskrvinignar och fiendebettenden kan modellen
+generera beskrivnignar i realtid med hjälp av grundläggande information(Det går såklart att göra sin bakgrundsinformation så lång 
+som man vill). Det här ökar spelts värde för en potentiell kund då varje spelomgång blir en unik upplevelse. 
+
+Det erbjuder ett dynamsikt världsbygge. som jag tidigare var inne på går  det att enkelt med hjälp av bakgrundsfilen
+helt ändra speluplevelsen utan att ändra någon faktiskt kod. Det här skulle öppna upp för eventuella försäljningar av 
+så kallat downloadable content (DLC), alltså att sälja ytterligare bakgrundfiler som enkelt byts ut mot den urspungliga.
+
+AI imtegreationen erbjuder mer personaliserad spelupplevelse, om spelaren har lågt HP anpassar modellen sig efter det och kan 
+tex låta mer dyster eller stressad. 
+
+Det finns såklart etiska utmaningar med att använda AI-modeller på det härt sättet. Hur "rumsren" historia man än har i sina filer
+kan spelare ändå försöka provocera fram olämpliga svar från AIn. Det här gör det ytterst viktigt för oss som skapare av sån här typ 
+av spel att ta ansvar för och aventuellt sätta begräsningar för hur AIn kan användas. 
+
+Då AI-modeller tränas på en stor uppskö av data som finns tillgänglig kan det finnas en risk för stereotypiska framställande i berättelserna.
+Det kan innebärea att AIn tex beskriver Troll Orcher eller Goblins på ett sätt som kan förstärka rasistiska stereotyper även om det
+itne är så det framställs i bakfrundfilerna. 
+
+Utöver etiska utmanignar stöter vi även på tekniska utmanignar, något som jag kom i kontakt med flera gånger under utvecklingen.
+Det mest återkommande problemet är latens i återkopplingen från AIn. Det spelar mindre roll i ett textbaserat spel men även om det
+är textbaserat kan man vara inne i en del där man själv är uppslukad i spelet och dess historia. Vid dessa tillfällen blir det aningen
+brytande för immersionen när man behöver vänta 5-10 sekudner ibland för att AIn ska beskriva ett svärshugg till exempel.
+
+Andra tekniska utmanignar är att lyckas hålla AIn på rätt baana genom hela spelets gång. DEt finns en risk att AIn glömmer bort
+var som hände för ex antal rum sedan och då tappar vi även här immersionen. Det är svårt att lyckas hålla den röda tråden
+ju längre spelet blir. 
+
+Det leder oss in på den sista utmanignen, skalning och kostnad. Att använda Ai agenter som berättare som ska hantera anrop kan bli en 
+stor kostnad. Låt oss säga att vi tex har 10 000 spelare som ska göra 1000 anrop i minuten, då kommer API-kostnaderna bli enorma.
+Lösnignen på detta kan vara att optimera RAGsystemet för att använda mindre och billigare modeller direkt på spelaren dator istäöllet
+för molnet.
+
+Till sist kan jag öven konstatera att jag själv blivit hemmablind i mitt utvecklande. Då jag själv skriver koden och testar
+spelet blir det lätt att det som jag ser som uppenbart kanske inte andra gör. Jag hade definitivt gynnats av att ha använt
+mig av några spoeltestare som ahde fått testa och utmana logiken. Det fanns tycärr itne tid för detta men det är något jag atar med mig 
+till framtida utveckling. 
 
 
 
