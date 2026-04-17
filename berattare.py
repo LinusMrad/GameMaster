@@ -36,6 +36,7 @@ class Narrator:
         1. STRICT TRUTH: Du får ENDAST beskriva föremål, dörrar och varelser som finns i den bifogade BAKGRUNDSINFORMATIONEN.
         2. INGA HALLUCINATIONER: Om en dörr eller ett föremål inte nämns i Lore, finns det inte. Hitta aldrig på magiska effekter eller rumshändelser på egen hand.
         3. INGEN FRAMTIDSBLICK: Beskriv enbart den nuvarande handlingen. Om spelaren tar ett föremål, beskriv bara det ögonblicket fantisera inte om vad som händer i nästa rum.
+        4. "När spelaren söker ('sök'), beskriv endast vad de upptäcker eller ser i omgivningen. Spelaren rör eller plockar aldrig upp föremål i sök-beskrivningen. Spara den interaktionen tills spelaren faktiskt använder 'ta'-kommandot.
         {context}
 
         Händelse: {event_info.get('typ')}

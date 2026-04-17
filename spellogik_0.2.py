@@ -500,7 +500,7 @@ def show_room(player):
     
     #Kollar om rumemt redan har en beskrivning i chache
     if hasattr(room, "generated_description") and room.generated_description:
-        ai_description = room.generated_despcription
+        ai_description = room.generated_description
     else:
     # om ingen beskrivning finns generera en ny
         info = {
@@ -813,7 +813,7 @@ ealdrorsrum = Room("Ealdrors rum")
 
 # Utgångar källare
 kallare.connect("norr", korridor, locked=False, hidden=False, dc=0, key=None) 
-kallare.connect("väster", baracker, locked=True, hidden=True, dc=4, key="rostig nyckel")
+kallare.connect("väster", baracker, locked=True, hidden=False, dc=4, key="rostig nyckel")
 kallare.connect("söder", bergsspricka, locked=False, hidden=True, dc=18, key=None)
 
 # utgångar Barack 

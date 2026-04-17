@@ -2,9 +2,9 @@
 
 ## RUM_01_KÄLLARE
 **Namn:** Källaren
-**Beskrivning:** Du står på en avsats som är en meter bred och ligger femton fot ovanför en stor källare. Stentrappor leder ner till golvet. En stencistern upptar den västra delen av rummet, kantad med tunnor fyllda med saltat fläsk och mjöl.
+**Beskrivning:** Du står på en avsats som är en meter bred och ligger femton fot ovanför en stor källare. Stentrappor leder ner till golvet. En stencistern upptar den västra delen av rummet, kantad med tunnor fyllda med saltat fläsk och mjöl. I väster finns en låst trädörr.
 **Dolda Detaljer:** - (DC 4): En rostig nyckel gömd i ett av faten. Låser upp dörren mot väster.
-- (DC 18): En lös stenplatta bakom en tunna avslöjar en dold passage.
+- (DC 18): En lös stenplatta bakom en tunna avslöjar en dold passage till söder.
 **Fiender:** Inga, rummet känns ödsligt och tyst.
 **Stämning:** Torr luft, fladdrande ljus från gamla oljelampor, doft av salt och instängt damm.
 **Interaktioner** Om spelaren undersöker faten kan de finna en rostig nyckel i munnen på en saltad fisk.
