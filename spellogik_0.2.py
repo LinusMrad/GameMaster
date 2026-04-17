@@ -854,3 +854,13 @@ player.current_room = kallare
 # 9. Starta spelet
 # =========================================
 player_loop(player)
+
+"""
+Jag har skapat ett logik och textbaserat simpelt RPG-spel med inspiration från Dungeons and dragons.
+Jag började med att skapa min huvudfil (spellogik.py) i vilken jag skapade min så kallade spelmotor, det är här jag bestämmer
+och reglerar hur spelet ska bete sig. Alltå all udnerliggande logik blir då hårdkodad, exempelvis hur mcyket liv en karaktär har,
+hur mycket skada en karaktär tar osv. På den här logiken har jag sedan lagt på en chatbot med RAG som blir berättaren i spelet.
+Det boten gör är att beskriva händelser och platser i spelet. Exempelvis istället för att skriva "Du står i en kall och mörk källare" 
+Skriver boten något mer målande som tex "Du står i en källare, mörkret omsluter dig samtidigt som en stank av mögel fyller dina sinnen".
+För att boten itne ska hitta på allt själv har jag gett den en fil där den hittar informationen för  I filen spellogik.py finns den initiala koden där man kan spela spelet som det är men utan nå
+"""
