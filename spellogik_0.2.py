@@ -7,6 +7,7 @@ import sys
 import random
 from berattare import Narrator
 
+# Initierar AI-berättaren
 dm= Narrator()
 
 # =========================================
@@ -99,6 +100,9 @@ enemy_types = {
 # =========================================
 
 class Character:
+    """
+    Basklass för alla karaktärer i spelet
+    """
     def __init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage):
         self.name = name
         self.hp = hp
@@ -110,18 +114,30 @@ class Character:
         self.weapon_damage = weapon_damage
 
     def take_damage(self, amount):
+        """
+        Minskar karaktärers liv med angiven mängd
+        """
         self.hp -= amount
         #print(f"{self.name} tar {amount} skada. HP kvar: {self.hp}")
         
     def is_alive(self):
+        """
+        Reurnerar True om en karaktär har liv kvar
+        """
         return self.hp > 0
     
     def get_modifier(self, stat):
+        """
+        Beräknar en modifier liknande D&D koncept som baseras på ett grundvärde (10)
+        """
         return(stat - 10) // 2
 
 
 
 class Player(Character):
+    """
+    Basklass för splarroller
+    """
     def __init__(self, name, hp, armor, strength, agility, intelligence, charisma, weapon_damage):
         super().__init__(name, hp, armor, strength, agility, intelligence, charisma, weapon_damage)
         self.inventory = []
@@ -185,6 +201,9 @@ class Alv(Player):
 
 # Fiende
 class Enemy(Character):
+    """
+    Klass för monster som skapas utifrån fiendemallen enemey_types
+    """
     def __init__(self, name):
         stats = enemy_types[name]
         super().__init__(
@@ -198,20 +217,14 @@ class Enemy(Character):
             weapon_damage=stats["weapon_damage"]
         )
 
-# ================= Fiender ================
-# Jag valde att separera speldata (t.ex. fiendetyper och rumstyper)
-# från själva klasserna genom att använda dictionaries.
-# Detta gör systemet mer flexibelt och lättare att utöka utan att
-# ändra den underliggande logiken
-
-
-
-
-
 # =========================================
 # 3. Item-klasser
 # =========================================
+
 class Item:
+    """
+    Klass som representerar ett föremål i spelet
+    """
     def __init__(self, name, description="", hidden=False, dc=10):
         self.name = name
         self.description = description
@@ -219,6 +232,9 @@ class Item:
         self.dc = dc
     
     def use(self, player):
+        """
+        Metod för att använda ett föremål i spelet
+        """
         print(f"Du kan inte använda{self.name} här.")
 
 class Key(Item):
@@ -345,6 +361,9 @@ room_types = {
 # =========================================
 
 class Room:
+    """
+    Represnterrar en plats i spelet, som även har RAG-stöd
+    """
     def __init__(self, room_type):
         self.room_type = room_type
         data = room_types[room_type]        
@@ -356,6 +375,9 @@ class Room:
         self.searched = False
 
     def connect(self, direction, room, locked=False, key=None, hidden=False, dc=10):
+        """
+        Kopplar ihop ett rum/plöats med ett annat
+        """
         self.exits[direction] = {
             "room": room,
             "locked": locked,
@@ -403,7 +425,7 @@ def attack(attacker, defender):
     damage = 0
     resultat_text = ""
 
-    # --- Logik för träff/miss ---
+    # Logik för träff/miss 
     if base == 1:
         resultat_text = "fumlar totalt och missar pinsamt"
     elif base == 20:
@@ -417,7 +439,7 @@ def attack(attacker, defender):
     else:
         resultat_text = "försöker attackera men missar"
 
-    # Information om HP(karaktärens hälsa)
+    # Information om HP(karaktärens liv)
 
     if not defender.is_alive():
         hälso_info = "DÖDLIG: Fienden faller till marken, besegrad och livlös."
@@ -428,7 +450,7 @@ def attack(attacker, defender):
     else:
         hälso_info = f"OSKADD: Fienden är fortfarande vid god vigör. HP: {defender.hp}."
 
-    # --- AI beskrivning
+    # AI beskrivning
     info = {
         "typ": "stridshändelse",
         "rum": "en pågående strid",
@@ -887,7 +909,11 @@ Tex kan jag söka efter "mörker" och då kan systemet hitta beskrivnignar som n
 ord ligger nära avrandra i betydlese i min vectorstore. Det här gör att även om spelets logik eller handlignar som spelaren gör inte
 exakt macthar något i bakgrundsfilen så kan den ändå hitta relevant information att hämta. 
 
-Jag testade flera olika sätt att dela upp mina chunks. 
+Jag utvärderade två olika metoder för uppdelningen av min data. Jag började med att initialt dela upp min data i en fast uppdelning
+med 600 tecken och överlappning på 100 tecken. Jag gick senare över till att dela upp struktuirerat med hjälp av min markdownfil.
+Jag delade istället upp via rubkriker (##) på det sättet fick varje chunk ett egen "rum". Även om jag märker att det itne alltid 
+är någon större skillnad i uppdelningarna så gav markldownuppdelningen en renare struktur och minskade risken för att AIn
+hämtade information ifrån någon anna del av spelets värld.
 
 I filen berattare.py har jag själva AI-boten, jag har använt mig av Gemini och jag valde att köra via molnet. Det finns en risk att
 det blir för många anrop och boten lägger ner då jag kör på en gratisversion samt att det slutar fungera om internet ligger nere. 
@@ -942,7 +968,10 @@ brytande för immersionen när man behöver vänta 5-10 sekudner ibland för att
 
 Andra tekniska utmanignar är att lyckas hålla AIn på rätt baana genom hela spelets gång. DEt finns en risk att AIn glömmer bort
 var som hände för ex antal rum sedan och då tappar vi även här immersionen. Det är svårt att lyckas hålla den röda tråden
-ju längre spelet blir. 
+ju längre spelet blir. Jag löste detta via att skapa en beskrivnings-chache, där jag lagrade den initiala beskrivningen av ett rum. 
+Det här gjorde att varje gång spelaren kommer tillbaka till ett rum kommer hen få samma beskrvining. 
+Det finns klart andra lösnignar på detta och jag ahde kunant gå längre än så att tex implementera att AIn känner igen rummet och 
+återger att vi kommer tillbaka tilld et och inte bara återkommer till samma beskrivning. 
 
 Det leder oss in på den sista utmanignen, skalning och kostnad. Att använda Ai agenter som berättare som ska hantera anrop kan bli en 
 stor kostnad. Låt oss säga att vi tex har 10 000 spelare som ska göra 1000 anrop i minuten, då kommer API-kostnaderna bli enorma.
@@ -953,9 +982,5 @@ Till sist kan jag öven konstatera att jag själv blivit hemmablind i mitt utvec
 spelet blir det lätt att det som jag ser som uppenbart kanske inte andra gör. Jag hade definitivt gynnats av att ha använt
 mig av några spoeltestare som ahde fått testa och utmana logiken. Det fanns tycärr itne tid för detta men det är något jag atar med mig 
 till framtida utveckling. 
-
-
-
-
 
 """
