@@ -750,6 +750,7 @@ def evaluate_bot(narrator):
     """
     System för att utvärdera AI.modellens svar och kontext
     """
+    
     test_cases = [
     {
         "query": "Vad finns i tunnorna i källaren",
@@ -760,23 +761,48 @@ def evaluate_bot(narrator):
         "query": "Hur ser trollen ut i vaktbarackerna?",
         "expected_keyword": "olivgrön",
         "context": "Vaktbaracker"
+    },
+
+    {
+    "query": "Finns det en gyllene drake i vaktbarackerna?",
+    "expected_keyword": "nej", # Eller "finns inte" / "ser ingen"
+    "context": "RUM_08_VAKTBARACKER",
+    "negative_test": True
     }
     ]
 
     print("\n"+ "="*50)
     print("--- Systemevaluering: RAG-kontroll ---")
+
     for test in test_cases:
+        time.sleep(2)
         # Simulerar ett anrop till AI-berättaren
         info = {"rum": test["context"], "typ": test["query"], "status": "Testkörning"}
-        response = narrator.get_description(info)
-        
-        # Kontrollerar om nyckelordet finns i filen bakgrundsinformation
-        success = test["expected_keyword"].lower() in response.lower()
-        status = "Godkänd" if success else "Misslyckad"
+        try:
+            response = narrator.get_description(info)
 
-        print(f"\nTestfråga: {test["query"]}")
-        print(f"Status: {status}")
-        print(f"AI-berättarens svar: {response[:120]}...")
+            # omvandlar till små bokstäveer för säkrare sökning
+            response_lower = response.lower()
+            keyword_lower = test["expected_keyword"].lower()
+
+            # utvärderingslogik
+            if test.get("negative_test"):
+                #För en negativ fråga kontrollera om AIn säger nej eller finsn ej om nyckelrodet saknas
+                success = ("nej" in response_lower or "inte" in response_lower or "saknas" in response_lower)
+            else:
+                # För vanliga frågort kontrollerar vi om nyckelordet finns i kontexten
+                success = keyword_lower in response_lower
+
+            status = "Godkänd" if success else "Misslyckad"
+
+            print(f"\nTestfråga: {test['query']}")
+            print(f"Typ: {'Negativt test' if test.get('negative_test') else 'Positivt test'}")
+            print(f"Status: {status}")
+            print(f"AI-berättarens svar: {response[:120]}...")
+        except Exception as e:
+            print(f"Kunde inte hämta svar för {test['query']}: {e}")
+            continue
+
     print("="*50 + "\n")
 
 def player_loop(player):
@@ -923,6 +949,8 @@ Jag skapade funktionen evaluate_bot för att utvärdera min modell. Den här tes
 korrekt information från min vectorstore. Jag använde mig av nyckelordsutvärdering. Det innebär att jag ställer en fråga
 till AI-berättaren och den ger mig ett svar som ska innehålla det här nyckelordet. På det här sättet kan jag 
 säkertsälla att min AI hämtar korrekt information i den givna kontexten samt minimerar risken för så kallad hallucination. 
+Jag implementerade även en så kallad negativ fråga där jag frågar boten om något som itne finns i kontexten. 
+Det här gjorde jag för att återigen säkertsälla att Ain itne går utanför sina gränser och hallucinerar fram ett svar.
 
 Under utvecklingsfasen upptäckte jag initialt att mitt utvärderingssystem ofta gav utslaget underkänt vid testfrågorna trots att AIn
 gav korrekta meningar. DEt här berodde på att test-skriptets förväntade nyckelord inte matchade med min bakgrundsfil. 
@@ -934,6 +962,16 @@ Det beror på att förhandsvisningen var för kort för att visa nyckelordet. Mi
 och mer målande beskrivningar än att bara fokusera på själva nyckelordet. Med detta som bakgrund hade det kanske varit bättre
 att använda en annan typ av utvärderingsmetod än just nyckelordsutvärdering. Man kan tex anvädna sig av modellbaserad utvärderingar
 något som troligen hade varit ett bättre val för en faktiskt produktionmiljö.
+
+Jag märket också under utveckligen att jag ofta fick 503-fel vilekt innebär att servern är överbelastad. Det återrkom ofta vid utvärderingssteget,
+därför implementerade jag en väntetid mellan mina kontrollfrågor. Det här är direkt kopplat till användnignen av molnbaserade API-tjänster
+speciellt vid anvädning av gratisversioner. Dessa versioner har ofta striktare begräsningar för hur många anrop per minut man kan göra och
+har en lägre prioritet vid hög serverbelastining.
+För att hantera detta implementerade jag två lösningar, i min utvärderingsloop la jag in en fördröjningsfunktion mellan varje fråga för
+att minska risken för att nå max antal anrop per minut. Sedan implementerade jag även en try-except block för att förhindra att spelet kraschar
+när den når max antal anrop. 
+Det här belyser en stor utmaning med användning av molntjänster och behovet av att bygga starka feltoleranta system.
+I en framtidsa produktionsmiljö hade detta kunant lösas med att använda en betalversion eller byta mot en AI som tillåter fler anrop.
 
 Sammanfattningsvis visar detta projekt hur RAG-teknik kan användas för att lyfta ett traditionellt spelmotornarrativ 
 och göra det mer dynamiskt. Genom att jag har separerat den hårdkodade spellogiken från den kreativa beskrivningen skapar jag ett 
