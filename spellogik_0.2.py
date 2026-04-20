@@ -788,7 +788,7 @@ def evaluate_bot(narrator):
             # utvärderingslogik
             if test.get("negative_test"):
                 #För en negativ fråga kontrollera om AIn säger nej eller finsn ej om nyckelrodet saknas
-                success = ("nej" in response_lower or "inte" in response_lower or "saknas" in response_lower)
+                success = any(word in response_lower for word in ["nej", "inte", "saknas", "ingen", "finns ej"])
             else:
                 # För vanliga frågort kontrollerar vi om nyckelordet finns i kontexten
                 success = keyword_lower in response_lower
@@ -951,6 +951,8 @@ till AI-berättaren och den ger mig ett svar som ska innehålla det här nyckelo
 säkertsälla att min AI hämtar korrekt information i den givna kontexten samt minimerar risken för så kallad hallucination. 
 Jag implementerade även en så kallad negativ fråga där jag frågar boten om något som itne finns i kontexten. 
 Det här gjorde jag för att återigen säkertsälla att Ain itne går utanför sina gränser och hallucinerar fram ett svar.
+Det här gör att frågorna inte alltid svaras men spelt kan fortsätta, i en verklig miljö hade jag även kunnat skapa ett setarat slript
+för att hantera utvärderingen och kunant ta en fråga i taget. 
 
 Under utvecklingsfasen upptäckte jag initialt att mitt utvärderingssystem ofta gav utslaget underkänt vid testfrågorna trots att AIn
 gav korrekta meningar. DEt här berodde på att test-skriptets förväntade nyckelord inte matchade med min bakgrundsfil. 
