@@ -6,7 +6,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHea
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
-# Hämta API-nyckel
+# Hämta API-nyckel och lägg till din nyckel här
 os.environ["GOOGLE_API_KEY"] 
 
 def skapa_databas():
